@@ -18,12 +18,22 @@ public class RiskCoverageTestFitness extends TestFitnessFunction {
 		super();
 		this.className = riskClass;
 		this.methodName = riskMethod;
-		riskMthdSig = className + "." + methodName;
+		riskMthdSig = riskClass + "." + riskMethod;
+//		org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw goal:"+riskMthdSig);
+//		org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw goal:"+riskMthdSig.equals("org.objectweb.asm.Label.<init>()V"));
 	}
 
 	@Override
 	public double getFitness(TestChromosome individual, ExecutionResult result) {
-		double fitness = 1.0;
+		double fitness = 1.0;  
+//		String s = "org.objectweb.asm.Label.<init>()V";
+//		s=s.replace("org.evosuite.shaded.", "");
+//		if(s.equals(riskMthdSig)) {
+//			org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw target goal:"+Util.getCoveredMthd(result).contains(riskMthdSig));
+//			for(String mthd:Util.getCoveredMthd(result)) {
+//				org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw target goal:"+mthd);
+//			}
+//		}
 		if(Util.getCoveredMthd(result).contains(riskMthdSig)) {
 			fitness = 0.0;
 		}

@@ -1023,7 +1023,7 @@ public class Properties {
 	public static String COVERED_GOALS_FILE = REPORT_DIR + File.separator + "covered.goals";
 
 	@Parameter(key = "assertions", group = "Output", description = "Create assertions")
-	public static boolean ASSERTIONS = true;
+	public static boolean ASSERTIONS = false;
 
 	public enum AssertionStrategy {
 		ALL, MUTATION, UNIT

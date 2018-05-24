@@ -20,24 +20,33 @@ public class RiskCoverageSuiteFitness extends TestSuiteFitnessFunction {
 		Set<String> reachedMethods = new HashSet<String>();
 
 		for (ExecutionResult result : results) {
-//			if (result.hasTimeout() || result.hasTestException()) {
-//				continue;
-//			}
-//			for (String mthd : result.getTrace().getCoveredMethods()) {
-////				org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw covered method:" + mthd);
-//				reachedMethods.add(mthd);
-//			}
+			// if (result.hasTimeout() || result.hasTestException()) {
+			// continue;
+			// }
+			// for (String mthd : result.getTrace().getCoveredMethods()) {
+			//// org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw covered method:" +
+			// mthd);
+			// reachedMethods.add(mthd);
+			// }
 			reachedMethods.addAll(Util.getCoveredMthd(result));
 		}
 
 		for (String reachedMthd : reachedMethods) {
-//			org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw covered method:" + reachedMthd);
+//			 org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw covered method:" +
+//			 reachedMthd);
 			Double dis = MethodDistance.i().getDistance(Util.evo2std(reachedMthd));
+			if (dis == 0) {
+				org.evosuite.utils.LoggingUtils.getEvoLogger().info("===lzw zero fitness:" + reachedMthd);
+//				for(String reachedMthd1 : reachedMethods) {
+//					org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw covered method:" + reachedMthd1);
+//				}
+			}
 			if (dis < fitness) {
 				fitness = dis;
 			}
 		}
-//		org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw fitness:" + fitness);
+		// org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw fitness:" +
+		// fitness);
 		updateIndividual(this, individual, fitness);
 		return fitness;
 	}

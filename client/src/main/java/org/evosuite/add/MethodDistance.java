@@ -35,7 +35,7 @@ public class MethodDistance {
 			BufferedReader reader;
 			if(null==Properties.DISTANCE_FILE) {
 				org.evosuite.utils.LoggingUtils.getEvoLogger().info("load distance from: D:\\cWS\\notepad++\\MethodDistance.txt");
-				reader= new BufferedReader(new FileReader("D:\\cWS\\notepad++\\MethodDistance.txt"));
+				reader= new BufferedReader(new FileReader("D:\\ws_testcase\\distance\\org.apache.commons+commons-pool2+2.5.0.txt"));
 			}else {
 				org.evosuite.utils.LoggingUtils.getEvoLogger().info("load distance from: "+Properties.DISTANCE_FILE);
 				reader= new BufferedReader(new FileReader(Properties.DISTANCE_FILE));
@@ -103,6 +103,17 @@ public class MethodDistance {
 	}
 
 	 public static void main(String[] args) {
-	 System.out.println(MethodDistance.i().toString());
+//	 System.out.println(MethodDistance.i().toString());
+			for(String mthd:MethodDistance.i().getRiskMthds()) {
+//				org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw oriMthd:"+mthd);
+				String evoMthd = Util.std2evo(mthd);
+
+				int index = evoMthd.lastIndexOf(".");
+				String className = evoMthd.substring(0,index);
+				String methodName = evoMthd.substring(index+1);
+				String sig = className + "." + methodName;
+				org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw evoMthd:"+sig);
+				org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw evoMthd:"+sig.equals("org.objectweb.asm.Label.<init>()V"));
+			}
 	 }
 }

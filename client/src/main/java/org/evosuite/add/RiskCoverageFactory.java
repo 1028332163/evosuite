@@ -14,10 +14,18 @@ public class RiskCoverageFactory extends AbstractFitnessFactory<RiskCoverageTest
 		for(String mthd:MethodDistance.i().getRiskMthds()) {
 //			org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw oriMthd:"+mthd);
 			String evoMthd = Util.std2evo(mthd);
-//			org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw evoMthd:"+evoMthd);
+
 			int index = evoMthd.lastIndexOf(".");
 			String className = evoMthd.substring(0,index);
 			String methodName = evoMthd.substring(index+1);
+			
+			String sig = className + "." + methodName;
+//			org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw evoMthd:"+sig);
+//
+//			org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw evoMthd:"+sig.startsWith("org.objectweb.a"));
+//			org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw evoMthd:"+sig.startsWith("org.objectweb.as"));
+//			org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw evoMthd:"+sig.startsWith("org.objectweb.asm"));
+//			org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw evoMthd:"+sig.equals("org.objectweb.asm.Label.<init>()V"));
 			goals.add(new RiskCoverageTestFitness(className,methodName));
 		}
 		return goals;
