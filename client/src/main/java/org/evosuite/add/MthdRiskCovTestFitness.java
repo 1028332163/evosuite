@@ -6,7 +6,7 @@ import org.evosuite.testcase.TestChromosome;
 import org.evosuite.testcase.TestFitnessFunction;
 import org.evosuite.testcase.execution.ExecutionResult;
 
-public class RiskCoverageTestFitness extends TestFitnessFunction {
+public class MthdRiskCovTestFitness extends TestFitnessFunction {
 
 	private static final long serialVersionUID = -8547956190067458550L;
 
@@ -14,7 +14,7 @@ public class RiskCoverageTestFitness extends TestFitnessFunction {
 	protected final String methodName;
 	protected final String riskMthdSig;
 
-	public RiskCoverageTestFitness(String riskClass, String riskMethod) {
+	public MthdRiskCovTestFitness(String riskClass, String riskMethod) {
 		super();
 		this.className = riskClass;
 		this.methodName = riskMethod;
@@ -51,8 +51,8 @@ public class RiskCoverageTestFitness extends TestFitnessFunction {
 
 	@Override
 	public int compareTo(TestFitnessFunction other) {
-		if (other instanceof RiskCoverageTestFitness) {
-			RiskCoverageTestFitness otherMethodFitness = (RiskCoverageTestFitness) other;
+		if (other instanceof MthdRiskCovTestFitness) {
+			MthdRiskCovTestFitness otherMethodFitness = (MthdRiskCovTestFitness) other;
 			if (className.equals(otherMethodFitness.getClassName()))
 				return methodName.compareTo(otherMethodFitness.getMethod());
 			else
@@ -81,7 +81,7 @@ public class RiskCoverageTestFitness extends TestFitnessFunction {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		RiskCoverageTestFitness other = (RiskCoverageTestFitness) obj;
+		MthdRiskCovTestFitness other = (MthdRiskCovTestFitness) obj;
 		if (className == null) {
 			if (other.className != null) {
 				return false;
@@ -110,6 +110,9 @@ public class RiskCoverageTestFitness extends TestFitnessFunction {
 
 	@Override
 	public String getTargetMethod() {
+		for (StackTraceElement ele : Thread.currentThread().getStackTrace()) {
+			org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw trace:" + ele);
+		}
 		return getMethod();
 	}
 

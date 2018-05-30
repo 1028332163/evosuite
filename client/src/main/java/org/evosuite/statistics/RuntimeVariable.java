@@ -46,7 +46,7 @@ import java.util.Map;
  * 
  */
 public enum RuntimeVariable {
-
+	CLS_RISK,
 	Risk,
 	/** Number of predicates in CUT */
 	Predicates,

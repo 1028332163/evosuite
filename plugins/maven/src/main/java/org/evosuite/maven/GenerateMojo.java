@@ -131,8 +131,8 @@ public class GenerateMojo extends AbstractMojo {
 	@Parameter(property = "class")
 	private String classParam;
 	
-	@Parameter(property = "distance_file")
-	private String distance_file = null;
+	@Parameter(property = "mthd_distance_file")
+	private String mthd_distance_file = null;
 	/**
 	 * Defines files in the source directories to include (all .java files by
 	 * default).
@@ -266,8 +266,8 @@ public class GenerateMojo extends AbstractMojo {
 			params.add("-class");
 			params.add(classParam);
 		}
-		if(distance_file!=null) {
-			params.add("-Ddistance_file="+distance_file);
+		if(mthd_distance_file!=null) {
+			params.add("-Dmthd_distance_file="+mthd_distance_file);
 		}
 		params.add("-base_dir");
 		params.add("D:\\ws_testcase\\testcase\\");

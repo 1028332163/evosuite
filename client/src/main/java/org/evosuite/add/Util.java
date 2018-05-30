@@ -40,12 +40,34 @@ public class Util {
 		for (Throwable t : result.getAllThrownExceptions()) {
 			// org.evosuite.utils.LoggingUtils.getEvoLogger()
 			// .info("lzw Throwable:" + t.getMessage() + " " + t.getClass().getName());
-			if (t instanceof NoSuchMethodError) {
+			if (t instanceof NoSuchMethodError || t instanceof NoSuchMethodException) {
 				org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw NoSuchMethod:" + t.getMessage());
 				corveredMthd.add(t.getMessage());
 			}
 		}
 		return corveredMthd;
+	}
+
+	public static Set<String> getCoveredCls(ExecutionResult result) {
+		Set<String> corveredClses = new HashSet<String>();
+		for (String mthd : result.getTrace().getCoveredMethods()) {
+			corveredClses.add(evoMthd2cls(mthd));
+		}
+		for (Throwable t : result.getAllThrownExceptions()) {
+			// org.evosuite.utils.LoggingUtils.getEvoLogger()
+			// .info("lzw Throwable:" + t.getMessage() + " " + t.getClass().getName());
+			if (t instanceof ClassNotFoundException || t instanceof NoClassDefFoundError) {
+				String coveredCls = t.getMessage().replace("/", ".");
+				org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw no this class:" + coveredCls);
+				corveredClses.add(coveredCls);
+			}
+		}
+		return corveredClses;
+	}
+
+	public static String evoMthd2cls(String evoMthd) {
+
+			return evoMthd.substring(0, evoMthd.lastIndexOf("."));
 	}
 
 	/**

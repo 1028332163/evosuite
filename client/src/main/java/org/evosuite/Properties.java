@@ -95,8 +95,11 @@ public class Properties {
 
 	// ---------------------------------------------------------------
 	// Test sequence creation
-	@Parameter(key = "distance_file", group = "Test Creation", description = "File containing methods disatnce")
-	public static String DISTANCE_FILE = null;
+	@Parameter(key = "mthd_distance_file", group = "Test Creation", description = "File containing methods disatnce")
+	public static String MTHD_DISTANCE_FILE = null;
+	
+	@Parameter(key = "cls_distance_file", group = "Test Creation", description = "File containing methods disatnce")
+	public static String CLS_DISTANCE_FILE = null;
 	
 	@Parameter(key = "test_excludes", group = "Test Creation", description = "File containing methods that should not be used in testing")
 	public static String TEST_EXCLUDES = "test.excludes";
@@ -575,6 +578,7 @@ public class Properties {
 
 	@Parameter(key = "search_budget", group = "Search Algorithm", description = "Maximum search duration")
 	@LongValue(min = 1)
+	//CHANGE
 	public static long SEARCH_BUDGET = 60;
 
 	@Parameter(key = "OUTPUT_DIR", group = "Runtime", description = "Directory in which to put generated files")
@@ -1407,7 +1411,7 @@ public class Properties {
 		EXCEPTION, DEFUSE, ALLDEFS, BRANCH, CBRANCH, STRONGMUTATION, WEAKMUTATION,
 		MUTATION, STATEMENT, RHO, AMBIGUITY, IBRANCH, READABILITY,
         ONLYBRANCH, ONLYMUTATION, METHODTRACE, METHOD, METHODNOEXCEPTION, LINE, ONLYLINE, OUTPUT, INPUT,
-        REGRESSION,	REGRESSIONTESTS, TRYCATCH,RISK
+        REGRESSION,	REGRESSIONTESTS, TRYCATCH,RISK,CLS_RISK
 	}
 
     @Parameter(key = "criterion", group = "Runtime", description = "Coverage criterion. Can define more than one criterion by using a ':' separated list")

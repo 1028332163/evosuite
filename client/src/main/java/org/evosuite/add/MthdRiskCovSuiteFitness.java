@@ -9,7 +9,7 @@ import org.evosuite.testcase.execution.ExecutionResult;
 import org.evosuite.testsuite.AbstractTestSuiteChromosome;
 import org.evosuite.testsuite.TestSuiteFitnessFunction;
 
-public class RiskCoverageSuiteFitness extends TestSuiteFitnessFunction {
+public class MthdRiskCovSuiteFitness extends TestSuiteFitnessFunction {
 
 	private static final long serialVersionUID = -7721713060612435201L;
 
@@ -32,22 +32,20 @@ public class RiskCoverageSuiteFitness extends TestSuiteFitnessFunction {
 		}
 
 		for (String reachedMthd : reachedMethods) {
-//			 org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw covered method:" +
-//			 reachedMthd);
-			Double dis = MethodDistance.i().getDistance(Util.evo2std(reachedMthd));
+//			org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw covered method:" + reachedMthd);
+			Double dis = GlobalVar.i().getMthdDistance().getDistance(Util.evo2std(reachedMthd));
+			if (dis == 1) {
+				DebugUtil.infoSmall("===lzw small fitness:" + reachedMthd);
+			}
 			if (dis == 0) {
-				org.evosuite.utils.LoggingUtils.getEvoLogger().info("===lzw zero fitness:" + reachedMthd);
-//				for(String reachedMthd1 : reachedMethods) {
-//					org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw covered method:" + reachedMthd1);
-//				}
+				DebugUtil.infoZero("===lzw zero fitness:" + reachedMthd);
 			}
 			if (dis < fitness) {
 				fitness = dis;
 			}
 		}
-		// org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw fitness:" +
-		// fitness);
 		updateIndividual(this, individual, fitness);
+//		org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw fitness:" + fitness);
 		return fitness;
 	}
 

@@ -24,7 +24,7 @@ package org.evosuite.coverage;
 
 import org.evosuite.Properties;
 import org.evosuite.Properties.Criterion;
-import org.evosuite.add.RiskCoverageSuiteFitness;
+import org.evosuite.add.MthdRiskCovSuiteFitness;
 import org.evosuite.coverage.ambiguity.AmbiguityCoverageSuiteFitness;
 import org.evosuite.coverage.rho.RhoCoverageSuiteFitness;
 import org.evosuite.TestGenerationContext;
@@ -181,6 +181,8 @@ public class CoverageCriteriaAnalyzer {
                 return RuntimeVariable.TryCatchCoverage;
             case RISK:
     			return RuntimeVariable.Risk;
+            case CLS_RISK:
+            	return RuntimeVariable.CLS_RISK;
             default:
                 throw new RuntimeException("Criterion not supported: " + criterion);
 

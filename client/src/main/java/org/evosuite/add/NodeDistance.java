@@ -1,0 +1,71 @@
+package org.evosuite.add;
+
+import java.util.Map;
+import java.util.Set;
+
+
+public class NodeDistance {
+
+	private Map<String, Map<String, Double>> distances;// <bottom-method,<top-method,distance>>
+
+	public NodeDistance(Map<String, Map<String, Double>> distances) {
+		this.distances = distances;
+	}
+
+
+//	public static NodeDistance i() {
+//		if (instance == null) {
+//			instance = loadDistances();
+//		}
+//		return instance;
+//	}
+
+	public Set<String> getRiskTargets() {
+		return distances.keySet();
+	}
+
+	public Double getDistance(String bottom, String top) {
+		Double d = this.distances.get(bottom).get(top);
+		if (null != d) {
+			return d;
+		}
+		return Double.MAX_VALUE;
+	}
+
+	/**
+	 * @param top
+	 * @return minimum distance in all distances that is from each bottom to top.
+	 */
+	public Double getDistance(String top) {
+		Double minimum = Double.MAX_VALUE;
+		for (Map<String, Double> top2dis : this.distances.values()) {
+			Double dis = top2dis.get(top);
+			if (dis != null) {
+				if (dis < minimum)
+					minimum = dis;
+			}
+		}
+		return minimum;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for (String source : distances.keySet()) {
+			Map<String, Double> dises = distances.get(source);
+			for (String target : dises.keySet()) {
+				sb.append(source + "," + target + "," + dises.get(target));
+				sb.append(System.lineSeparator());
+			}
+		}
+		return sb.toString();
+	}
+	
+	public static void main(String[] args) {
+		System.out.println(GlobalVar.i().getMthdDistance().toString());
+		System.out.println(Util.evo2std("neu.lab.testcase.top.ClassTop.m1(Ljava/lang/String;I)V"));
+		Double dis = GlobalVar.i().getMthdDistance().getDistance(Util.evo2std("neu.lab.testcase.top.ClassTop.m1(Ljava/lang/String;I)V"));
+		System.out.println(dis);
+	}
+
+}

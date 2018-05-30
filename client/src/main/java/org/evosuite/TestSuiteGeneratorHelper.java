@@ -116,6 +116,9 @@ public class TestSuiteGeneratorHelper {
       case RISK:
           LoggingUtils.getEvoLogger().info("  - Risk");
           break;
+      case CLS_RISK:
+          LoggingUtils.getEvoLogger().info("  - Class_Risk");
+          break;
       default:
         throw new IllegalArgumentException("Unrecognized criterion: " + criterion);
     }
