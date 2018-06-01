@@ -34,9 +34,7 @@ public class MthdRiskCovSuiteFitness extends TestSuiteFitnessFunction {
 		for (String reachedMthd : reachedMethods) {
 //			org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw covered method:" + reachedMthd);
 			Double dis = GlobalVar.i().getMthdDistance().getDistance(Util.evo2std(reachedMthd));
-			if (dis == 1) {
-				DebugUtil.infoSmall("===lzw small fitness:" + reachedMthd);
-			}
+			
 			if (dis == 0) {
 				DebugUtil.infoZero("===lzw zero fitness:" + reachedMthd);
 			}

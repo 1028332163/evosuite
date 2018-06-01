@@ -57,6 +57,14 @@ public class Util {
 			// org.evosuite.utils.LoggingUtils.getEvoLogger()
 			// .info("lzw Throwable:" + t.getMessage() + " " + t.getClass().getName());
 			if (t instanceof ClassNotFoundException || t instanceof NoClassDefFoundError) {
+				try {
+					java.io.PrintWriter p = new java.io.PrintWriter(new java.io.FileWriter("D:\\trace.txt",true));
+					t.printStackTrace(p);
+					p.close();
+				}catch(Exception e) {
+					
+				}
+				
 				String coveredCls = t.getMessage().replace("/", ".");
 				org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw no this class:" + coveredCls);
 				corveredClses.add(coveredCls);

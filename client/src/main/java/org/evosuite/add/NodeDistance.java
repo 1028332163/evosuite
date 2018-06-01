@@ -38,12 +38,20 @@ public class NodeDistance {
 	 */
 	public Double getDistance(String top) {
 		Double minimum = Double.MAX_VALUE;
-		for (Map<String, Double> top2dis : this.distances.values()) {
-			Double dis = top2dis.get(top);
-			if (dis != null) {
-				if (dis < minimum)
-					minimum = dis;
-			}
+		String minBottom = "";
+		for(String bottom:this.distances.keySet()) {
+			Map<String, Double> top2dis = this.distances.get(bottom);
+				Double dis = top2dis.get(top);
+				if (dis != null) {
+					if (dis < minimum) {
+						minimum = dis;
+						minBottom = bottom;
+					}
+				}
+		}
+		
+		if (minimum == 1) {
+			DebugUtil.infoSmall("===lzw small fitness:" + top+"->"+minBottom);
 		}
 		return minimum;
 	}

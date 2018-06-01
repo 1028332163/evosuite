@@ -127,12 +127,18 @@ public class GenerateMojo extends AbstractMojo {
 
 	@Parameter(property = "target")
 	private String target;
-	
+
 	@Parameter(property = "class")
 	private String classParam;
-	
+
 	@Parameter(property = "mthd_distance_file")
 	private String mthd_distance_file = null;
+	
+	@Parameter(property = "cls_distance_file")
+	private String cls_distance_file = null;
+	
+	@Parameter(property = "random_seed")
+	private String random_seed = null;
 	/**
 	 * Defines files in the source directories to include (all .java files by
 	 * default).
@@ -258,22 +264,29 @@ public class GenerateMojo extends AbstractMojo {
 	private void runEvoSuiteOnSeparatedProcess(String target, String cp, String dir) throws MojoFailureException {
 
 		List<String> params = new ArrayList<>();
-//		params.add("-continuous");
-//		params.add("execute");
+		// params.add("-continuous");
+		// params.add("execute");
 		params.add("-target");
 		params.add(target);
-		if(classParam!=null) {
+		if (classParam != null) {
 			params.add("-class");
 			params.add(classParam);
 		}
-		if(mthd_distance_file!=null) {
-			params.add("-Dmthd_distance_file="+mthd_distance_file);
+		if (mthd_distance_file != null) {
+			params.add("-Dmthd_distance_file=" + mthd_distance_file);
 		}
+		if (cls_distance_file != null) {
+			params.add("-Dcls_distance_file=" + cls_distance_file);
+		}
+		if (random_seed != null) {
+			params.add("-Drandom_seed=" + random_seed);
+		}
+		
 		params.add("-base_dir");
 		params.add("D:\\ws_testcase\\testcase\\");
-		
+
 		params.add("-Dcriterion=" + criterion);
-//		params.add("-Dctg_schedule=" + schedule);
+		// params.add("-Dctg_schedule=" + schedule);
 		if (schedule.toUpperCase().equals(Properties.AvailableSchedule.HISTORY.toString())) {
 			try {
 				List<File> files = FileUtils.scan(this.project.getCompileSourceRoots(), this.includes, this.excludes);
@@ -285,8 +298,8 @@ public class GenerateMojo extends AbstractMojo {
 			params.add("-Dctg_history_file=" + dir + File.separator + Properties.CTG_DIR + File.separator
 					+ "history_file");
 		}
-//		params.add("-Dctg_memory=" + memoryInMB);
-//		params.add("-Dctg_cores=" + numberOfCores);
+		// params.add("-Dctg_memory=" + memoryInMB);
+		// params.add("-Dctg_cores=" + numberOfCores);
 
 		int port;
 		if (spawnManagerPort != null) {
@@ -297,16 +310,17 @@ public class GenerateMojo extends AbstractMojo {
 		}
 		params.add("-Dspawn_process_manager_port=" + port);
 
-//		if (timeInMinutesPerProject != 0) {
-//			params.add("-Dctg_time=" + timeInMinutesPerProject);
-//			params.add("-Dctg_min_time_per_job=" + timeInMinutesPerClass);
-//		} else {
-//			params.add("-Dctg_time_per_class=" + timeInMinutesPerClass); // there is no time limit, so test all classes
-//																			// X minutes
-//		}
-//		if (cuts != null) {
-//			params.add("-Dctg_selected_cuts=" + cuts);
-//		}
+		// if (timeInMinutesPerProject != 0) {
+		// params.add("-Dctg_time=" + timeInMinutesPerProject);
+		// params.add("-Dctg_min_time_per_job=" + timeInMinutesPerClass);
+		// } else {
+		// params.add("-Dctg_time_per_class=" + timeInMinutesPerClass); // there is no
+		// time limit, so test all classes
+		// // X minutes
+		// }
+		// if (cuts != null) {
+		// params.add("-Dctg_selected_cuts=" + cuts);
+		// }
 		if (cutsFile != null) {
 			params.add("-Dctg_selected_cuts_file_location=" + cutsFile);
 		}
