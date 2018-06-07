@@ -36,9 +36,9 @@ public class ClsRiskCovSuiteFitness extends TestSuiteFitnessFunction{
 //			 org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw covered method:" +
 //			 reachedMthd);
 			Double dis = GlobalVar.i().getClsDistance().getDistance(reachedCls);
-			if (dis == 1) {
-				DebugUtil.infoSmall("===lzw small fitness:" + reachedCls);
-			}
+//			if (dis == 1) {
+//				DebugUtil.infoSmall("===lzw small fitness:" + reachedCls);
+//			}
 			if (dis == 0) {
 				DebugUtil.infoZero("===lzw zero fitness:" + reachedCls);
 			}

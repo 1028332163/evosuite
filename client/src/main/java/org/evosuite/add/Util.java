@@ -1,5 +1,6 @@
 package org.evosuite.add;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -57,15 +58,25 @@ public class Util {
 			// org.evosuite.utils.LoggingUtils.getEvoLogger()
 			// .info("lzw Throwable:" + t.getMessage() + " " + t.getClass().getName());
 			if (t instanceof ClassNotFoundException || t instanceof NoClassDefFoundError) {
+				String coveredCls = extraExpCls(t.getMessage());
 				try {
-					java.io.PrintWriter p = new java.io.PrintWriter(new java.io.FileWriter("D:\\trace.txt",true));
-					t.printStackTrace(p);
+					java.io.File file = new java.io.File("D:\\ws_testcase\\image\\trace.txt");
+					if (!file.getParentFile().exists()) {
+						file.getParentFile().mkdirs();
+					}
+					java.io.PrintWriter p = new java.io.PrintWriter(new java.io.FileWriter(file, true));
+					p.println("============================");
+//					while (t != null) {
+						t.printStackTrace(p);
+//						p.println("toString:" + t.toString());
+//						p.println("message:" + t.getMessage());
+//						t = t.getCause();
+//					}
 					p.close();
-				}catch(Exception e) {
-					
+				} catch (Exception e) {
+					org.evosuite.utils.LoggingUtils.getEvoLogger().error("trace error:", e);
 				}
-				
-				String coveredCls = t.getMessage().replace("/", ".");
+				org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw exception:" + t.toString());
 				org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw no this class:" + coveredCls);
 				corveredClses.add(coveredCls);
 			}
@@ -73,9 +84,25 @@ public class Util {
 		return corveredClses;
 	}
 
-	public static String evoMthd2cls(String evoMthd) {
+	private static String extraExpCls(String expMessage) {
+		String expCls;
+		if (expMessage.startsWith("Could not initialize class")) {
+			expCls = expMessage.substring(27);
+		} else if (expMessage.startsWith("Class ") && expMessage.endsWith(" not found")) {
+			expCls = expMessage.substring(6, expMessage.length() - 10);
+		} else if (expMessage.startsWith("Class '")
+				&& expMessage.endsWith("' should be in target project, but could not be found!")) {
+			expCls = expMessage.substring(7, expMessage.length() - 54);
+		} else {
+			expCls = expMessage;
+		}
+		expCls = expCls.replace("/", ".");
+		// System.out.println("expCls:"+expCls+"|");
+		return expCls;
+	}
 
-			return evoMthd.substring(0, evoMthd.lastIndexOf("."));
+	public static String evoMthd2cls(String evoMthd) {
+		return evoMthd.substring(0, evoMthd.lastIndexOf("."));
 	}
 
 	/**
