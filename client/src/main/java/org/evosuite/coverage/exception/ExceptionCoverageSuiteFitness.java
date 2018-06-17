@@ -32,9 +32,9 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 
 /**
- * Exception fitness is different from the others, as we do not know a priori how
- * many exceptions could be thrown in the SUT. In other words, we cannot really
- * speak about coverage percentage here
+ * Exception fitness is different from the others, as we do not know a priori
+ * how many exceptions could be thrown in the SUT. In other words, we cannot
+ * really speak about coverage percentage here
  */
 public class ExceptionCoverageSuiteFitness extends TestSuiteFitnessFunction {
 
@@ -42,85 +42,119 @@ public class ExceptionCoverageSuiteFitness extends TestSuiteFitnessFunction {
 
 	private static Logger logger = LoggerFactory.getLogger(ExceptionCoverageSuiteFitness.class);
 
-    private static int maxExceptionsCovered = 0;
-    
+	private static int maxExceptionsCovered = 0;
 
 	public ExceptionCoverageSuiteFitness() {
 	}
-	
-    public static int getMaxExceptionsCovered() {
-        return maxExceptionsCovered;
-    }
+
+	public static int getMaxExceptionsCovered() {
+		return maxExceptionsCovered;
+	}
 
 	@Override
-	public double getFitness(
-	        AbstractTestSuiteChromosome<? extends ExecutableChromosome> suite) {
+	public double getFitness(AbstractTestSuiteChromosome<? extends ExecutableChromosome> suite) {
 		logger.trace("Calculating exception fitness");
 
-
 		/*
-		 * for each method in the SUT, we keep track of which kind of exceptions were thrown.
-		 * we distinguish between "implicit", "explicit" and "declared"
+		 * for each method in the SUT, we keep track of which kind of exceptions were
+		 * thrown. we distinguish between "implicit", "explicit" and "declared"
 		 */
 		Map<String, Set<Class<?>>> implicitTypesOfExceptions = new HashMap<>();
-        Map<String, Set<Class<?>>> explicitTypesOfExceptions = new HashMap<>();
-        Map<String, Set<Class<?>>> declaredTypesOfExceptions = new HashMap<>();
+		Map<String, Set<Class<?>>> explicitTypesOfExceptions = new HashMap<>();
+		Map<String, Set<Class<?>>> declaredTypesOfExceptions = new HashMap<>();
 
 		List<ExecutionResult> results = runTestSuite(suite);
+		for (ExecutionResult result : results) {
+			for (Throwable t : result.getAllThrownExceptions()) {
+				// org.evosuite.utils.LoggingUtils.getEvoLogger()
+				// .info("lzw Throwable:" + t.getMessage() + " " + t.getClass().getName());
+				if (t instanceof ClassNotFoundException || t instanceof NoClassDefFoundError) {
+					try {
+						java.io.File file = new java.io.File("D:\\ws_testcase\\image\\trace.txt");
+						if (!file.getParentFile().exists()) {
+							file.getParentFile().mkdirs();
+						}
+						java.io.PrintWriter p = new java.io.PrintWriter(new java.io.FileWriter(file, true));
+						p.println("============================");
+						// while (t != null) {
+						t.printStackTrace(p);
+						// p.println("toString:" + t.toString());
+						// p.println("message:" + t.getMessage());
+						// t = t.getCause();
+						// }
+						p.close();
+					} catch (Exception e) {
+						org.evosuite.utils.LoggingUtils.getEvoLogger().error("trace error:", e);
+					}
+					org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw exception:" + t.toString());
+				}
+			}
+		}
 
-		calculateExceptionInfo(results,implicitTypesOfExceptions,explicitTypesOfExceptions,declaredTypesOfExceptions, this);
-		
-		if(Properties.TEST_ARCHIVE) {
+		calculateExceptionInfo(results, implicitTypesOfExceptions, explicitTypesOfExceptions, declaredTypesOfExceptions,
+				this);
+
+		// org.evosuite.utils.LoggingUtils.getEvoLogger()
+		// .info("lzw implicitTypesOfExceptions size:" +
+		// implicitTypesOfExceptions.size());
+		// org.evosuite.utils.LoggingUtils.getEvoLogger()
+		// .info("lzw explicitTypesOfExceptions size:" +
+		// explicitTypesOfExceptions.size());
+		// org.evosuite.utils.LoggingUtils.getEvoLogger()
+		// .info("lzw declaredTypesOfExceptions size:" +
+		// declaredTypesOfExceptions.size());
+		if (Properties.TEST_ARCHIVE) {
 			// If we are using the archive, then fitness is by definition 0
 			// as all assertions already covered are in the archive
-			suite.setFitness(this,  0.0);
+			suite.setFitness(this, 0.0);
 			suite.setCoverage(this, 1.0);
 			maxExceptionsCovered = ExceptionCoverageFactory.getGoals().size();
 			return 0.0;
 		}
-		
-		int nExc = getNumExceptions(implicitTypesOfExceptions) + getNumExceptions(explicitTypesOfExceptions) +
-                getNumExceptions(declaredTypesOfExceptions);
 
-        if (nExc > maxExceptionsCovered) {
-            logger.info("(Exceptions) Best individual covers " + nExc + " exceptions");
-            maxExceptionsCovered = nExc;
-        }
+		int nExc = getNumExceptions(implicitTypesOfExceptions) + getNumExceptions(explicitTypesOfExceptions)
+				+ getNumExceptions(declaredTypesOfExceptions);
 
-        // We cannot set a coverage here, as it does not make any sense
-       	// suite.setCoverage(this, 1.0);
+		if (nExc > maxExceptionsCovered) {
+			logger.info("(Exceptions) Best individual covers " + nExc + " exceptions");
+			maxExceptionsCovered = nExc;
+		}
 
+		// We cannot set a coverage here, as it does not make any sense
+		// suite.setCoverage(this, 1.0);
+		org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw nExc1 size:" + nExc);
 		double exceptionFitness = 1d / (1d + nExc);
 
-        suite.setFitness(this, exceptionFitness);
-        if(maxExceptionsCovered > 0)
-        	suite.setCoverage(this, nExc / maxExceptionsCovered);
-        else
-        	suite.setCoverage(this, 1.0);
-        
-        return exceptionFitness;
+		suite.setFitness(this, exceptionFitness);
+		if (maxExceptionsCovered > 0)
+			suite.setCoverage(this, nExc / maxExceptionsCovered);
+		else
+			suite.setCoverage(this, 1.0);
+
+		org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw nExc2 size:" + nExc);
+		org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw exp fitness:" + exceptionFitness);
+		return exceptionFitness;
 	}
 
-	
-	
 	/**
-	 * Given the list of results, fill the 3 given (empty) maps with exception information.
-	 * Also, add exception coverage goals to mapping in {@link ExceptionCoverageFactory}
+	 * Given the list of results, fill the 3 given (empty) maps with exception
+	 * information. Also, add exception coverage goals to mapping in
+	 * {@link ExceptionCoverageFactory}
 	 * 
 	 * @param results
 	 * @param implicitTypesOfExceptions
 	 * @param explicitTypesOfExceptions
-     * @param declaredTypesOfExceptions
+	 * @param declaredTypesOfExceptions
 	 * @throws IllegalArgumentException
 	 */
-	public static void calculateExceptionInfo(List<ExecutionResult> results, 
+	public static void calculateExceptionInfo(List<ExecutionResult> results,
 			Map<String, Set<Class<?>>> implicitTypesOfExceptions, Map<String, Set<Class<?>>> explicitTypesOfExceptions,
-            Map<String, Set<Class<?>>> declaredTypesOfExceptions, ExceptionCoverageSuiteFitness contextFitness)
-		throws IllegalArgumentException{
-		
-		if(results==null || implicitTypesOfExceptions==null || explicitTypesOfExceptions==null ||
-				!implicitTypesOfExceptions.isEmpty() || !explicitTypesOfExceptions.isEmpty() ||
-                declaredTypesOfExceptions==null || !declaredTypesOfExceptions.isEmpty()){
+			Map<String, Set<Class<?>>> declaredTypesOfExceptions, ExceptionCoverageSuiteFitness contextFitness)
+			throws IllegalArgumentException {
+
+		if (results == null || implicitTypesOfExceptions == null || explicitTypesOfExceptions == null
+				|| !implicitTypesOfExceptions.isEmpty() || !explicitTypesOfExceptions.isEmpty()
+				|| declaredTypesOfExceptions == null || !declaredTypesOfExceptions.isEmpty()) {
 			throw new IllegalArgumentException();
 		}
 
@@ -130,7 +164,8 @@ public class ExceptionCoverageSuiteFitness extends TestSuiteFitnessFunction {
 			// Using private reflection can lead to false positives
 			// that represent unrealistic behaviour. Thus, we only
 			// use reflection for basic criteria, not for exception
-			if (result.hasTimeout() || result.hasTestException() || result.noThrownExceptions() || result.calledReflection()) {
+			if (result.hasTimeout() || result.hasTestException() || result.noThrownExceptions()
+					|| result.calledReflection()) {
 				continue;
 			}
 
@@ -139,75 +174,79 @@ public class ExceptionCoverageSuiteFitness extends TestSuiteFitnessFunction {
 			test.setLastExecutionResult(result);
 			test.setChanged(false);
 
-			//iterate on the indexes of the statements that resulted in an exception
+			// iterate on the indexes of the statements that resulted in an exception
+			// org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw
+			// expsize:"+result.getAllThrownExceptions().size());
 			for (Integer i : result.getPositionsWhereExceptionsWereThrown()) {
-				if(ExceptionCoverageHelper.shouldSkip(result,i)){
+				if (ExceptionCoverageHelper.shouldSkip(result, i)) {
 					continue;
 				}
 
-				Class<?> exceptionClass = ExceptionCoverageHelper.getExceptionClass(result,i);
-				String methodIdentifier = ExceptionCoverageHelper.getMethodIdentifier(result, i); //eg name+descriptor
-				boolean sutException = ExceptionCoverageHelper.isSutException(result,i); // was the exception originated by a direct call on the SUT?
+				Class<?> exceptionClass = ExceptionCoverageHelper.getExceptionClass(result, i);
+				String methodIdentifier = ExceptionCoverageHelper.getMethodIdentifier(result, i); // eg name+descriptor
+				boolean sutException = ExceptionCoverageHelper.isSutException(result, i); // was the exception
+																							// originated by a direct
+																							// call on the SUT?
 
 				/*
-				 * We only consider exceptions that were thrown by calling directly the SUT (not the other
-				 * used libraries). However, this would ignore cases in which the SUT is indirectly tested
-				 * through another class
+				 * We only consider exceptions that were thrown by calling directly the SUT (not
+				 * the other used libraries). However, this would ignore cases in which the SUT
+				 * is indirectly tested through another class
 				 */
 
 				if (sutException) {
 
-					boolean notDeclared = ! ExceptionCoverageHelper.isDeclared(result,i);
+					boolean notDeclared = !ExceptionCoverageHelper.isDeclared(result, i);
 
-                    if(notDeclared) {
-                        /*
-					     * we need to distinguish whether it is explicit (ie "throw" in the code, eg for validating
-					     * input for pre-condition) or implicit ("likely" a real fault).
-					     */
+					if (notDeclared) {
+						/*
+						 * we need to distinguish whether it is explicit (ie "throw" in the code, eg for
+						 * validating input for pre-condition) or implicit ("likely" a real fault).
+						 */
 
-                        boolean isExplicit = ExceptionCoverageHelper.isExplicit(result,i);
+						boolean isExplicit = ExceptionCoverageHelper.isExplicit(result, i);
 
-                        if (isExplicit) {
+						if (isExplicit) {
 
-                            if (!explicitTypesOfExceptions.containsKey(methodIdentifier)) {
-                                explicitTypesOfExceptions.put(methodIdentifier, new HashSet<Class<?>>());
-                            }
-                            explicitTypesOfExceptions.get(methodIdentifier).add(exceptionClass);
-                        } else {
+							if (!explicitTypesOfExceptions.containsKey(methodIdentifier)) {
+								explicitTypesOfExceptions.put(methodIdentifier, new HashSet<Class<?>>());
+							}
+							explicitTypesOfExceptions.get(methodIdentifier).add(exceptionClass);
+						} else {
 
-                            if (!implicitTypesOfExceptions.containsKey(methodIdentifier)) {
-                                implicitTypesOfExceptions.put(methodIdentifier, new HashSet<Class<?>>());
-                            }
-                            implicitTypesOfExceptions.get(methodIdentifier).add(exceptionClass);
-                        }
-                    } else {
-                        if (!declaredTypesOfExceptions.containsKey(methodIdentifier)) {
-                            declaredTypesOfExceptions.put(methodIdentifier, new HashSet<Class<?>>());
-                        }
-                        declaredTypesOfExceptions.get(methodIdentifier).add(exceptionClass);
-                    }
+							if (!implicitTypesOfExceptions.containsKey(methodIdentifier)) {
+								implicitTypesOfExceptions.put(methodIdentifier, new HashSet<Class<?>>());
+							}
+							implicitTypesOfExceptions.get(methodIdentifier).add(exceptionClass);
+						}
+					} else {
+						if (!declaredTypesOfExceptions.containsKey(methodIdentifier)) {
+							declaredTypesOfExceptions.put(methodIdentifier, new HashSet<Class<?>>());
+						}
+						declaredTypesOfExceptions.get(methodIdentifier).add(exceptionClass);
+					}
 
-
-					ExceptionCoverageTestFitness.ExceptionType type = ExceptionCoverageHelper.getType(result,i);
-                    /*
-                     * Add goal to ExceptionCoverageFactory
-                     */
-                    ExceptionCoverageTestFitness goal = new ExceptionCoverageTestFitness(Properties.TARGET_CLASS, methodIdentifier, exceptionClass, type);
-                    String key = goal.getKey();
-                    if(!ExceptionCoverageFactory.getGoals().containsKey(key)) {
-                    	ExceptionCoverageFactory.getGoals().put(key, goal);
-                    	test.getTestCase().addCoveredGoal(goal);
-                    	if(Properties.TEST_ARCHIVE && contextFitness != null) {
-                               Archive.getArchiveInstance().addTarget(goal);
-                               Archive.getArchiveInstance().updateArchive(goal, test, 0.0);
-                    	}
-                    }
+					ExceptionCoverageTestFitness.ExceptionType type = ExceptionCoverageHelper.getType(result, i);
+					/*
+					 * Add goal to ExceptionCoverageFactory
+					 */
+					ExceptionCoverageTestFitness goal = new ExceptionCoverageTestFitness(Properties.TARGET_CLASS,
+							methodIdentifier, exceptionClass, type);
+					String key = goal.getKey();
+					if (!ExceptionCoverageFactory.getGoals().containsKey(key)) {
+						ExceptionCoverageFactory.getGoals().put(key, goal);
+						test.getTestCase().addCoveredGoal(goal);
+						if (Properties.TEST_ARCHIVE && contextFitness != null) {
+							Archive.getArchiveInstance().addTarget(goal);
+							Archive.getArchiveInstance().updateArchive(goal, test, 0.0);
+						}
+					}
 				}
 
 			}
 		}
 	}
-	
+
 	public static int getNumExceptions(Map<String, Set<Class<?>>> exceptions) {
 		int total = 0;
 		for (Set<Class<?>> exceptionSet : exceptions.values()) {

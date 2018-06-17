@@ -14,9 +14,15 @@ public class ClsRiskCovFactory extends AbstractFitnessFactory<ClsRiskCovTestFitn
 		for (String cls : GlobalVar.i().getClsDistance().getRiskTargets()) {
 			goals.add(new ClsRiskCovTestFitness(cls));
 		}
-//		String cls = "org.apache.axis2.description.AxisService";
+		
+//		String cls = "org.apache.http.conn.util.PublicSuffixListParser";
 //		cls = cls.replace("org.evosuite.shaded.", "");
 //		goals.add(new ClsRiskCovTestFitness(cls));
+		
+//		String cls = "com.amazonaws.AmazonWebServiceRequest";
+//		cls = cls.replace("org.evosuite.shaded.", "");
+//		goals.add(new ClsRiskCovTestFitness(cls));
+		
 		return goals;
 	}
 

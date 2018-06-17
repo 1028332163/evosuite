@@ -24,6 +24,7 @@ import java.util.Map.Entry;
 
 import org.evosuite.Properties;
 import org.evosuite.TestGenerationContext;
+import org.evosuite.add.DebugUtil;
 import org.evosuite.ga.archive.Archive;
 import org.evosuite.graphs.cfg.BytecodeInstruction;
 import org.evosuite.graphs.cfg.BytecodeInstructionPool;
@@ -155,6 +156,35 @@ public class LineCoverageSuiteFitness extends TestSuiteFitnessFunction {
 		double fitness = 0.0;
 
 		List<ExecutionResult> results = runTestSuite(suite);
+		
+		for (ExecutionResult result : results) {
+			for (Throwable t : result.getAllThrownExceptions()) {
+				// org.evosuite.utils.LoggingUtils.getEvoLogger()
+				// .info("lzw Throwable:" + t.getMessage() + " " + t.getClass().getName());
+				if (t instanceof ClassNotFoundException || t instanceof NoClassDefFoundError) {
+//					try {
+//						java.io.File file = new java.io.File("D:\\ws_testcase\\image\\trace.txt");
+//						if (!file.getParentFile().exists()) {
+//							file.getParentFile().mkdirs();
+//						}
+//						java.io.PrintWriter p = new java.io.PrintWriter(new java.io.FileWriter(file, true));
+//						p.println("============================");
+//						// while (t != null) {
+//						t.printStackTrace(p);
+//						// p.println("toString:" + t.toString());
+//						// p.println("message:" + t.getMessage());
+//						// t = t.getCause();
+//						// }
+//						p.close();
+//					} catch (Exception e) {
+//						org.evosuite.utils.LoggingUtils.getEvoLogger().error("trace error:", e);
+//					}
+					DebugUtil.limitInfo("lzw exception:" + t.toString());
+//					org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw exception:" + t.toString());
+				}
+			}
+		}
+		
 		fitness += getControlDependencyGuidance(results);
 		logger.info("Branch distances: "+fitness);
 

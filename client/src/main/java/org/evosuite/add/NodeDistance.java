@@ -37,7 +37,12 @@ public class NodeDistance {
 	public Double getDistance(String top) {
 
 		Double minimum = Double.MAX_VALUE;
-//		String cls = "org.apache.axis2.description.AxisService";
+//		String cls = "org.apache.http.conn.util.PublicSuffixListParser";
+//		cls = cls.replace("org.evosuite.shaded.", "");
+//		if (cls.equals(top)) {
+//			minimum = 0.0;
+//		}
+//		String cls = "com.amazonaws.AmazonWebServiceRequest";
 //		cls = cls.replace("org.evosuite.shaded.", "");
 //		if (cls.equals(top)) {
 //			minimum = 0.0;

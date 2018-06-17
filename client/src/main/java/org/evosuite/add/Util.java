@@ -1,6 +1,5 @@
 package org.evosuite.add;
 
-import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -50,6 +49,13 @@ public class Util {
 	}
 
 	public static Set<String> getCoveredCls(ExecutionResult result) {
+//		org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw expsize:" + result.getAllThrownExceptions().size());
+//		if (result.getAllThrownExceptions().size() == 1) {
+//			org.evosuite.utils.LoggingUtils.getEvoLogger()
+//					.info("lzw expsize:" + result.getAllThrownExceptions().iterator().next().getClass().getName());
+//		}
+		// org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw
+		// expsize:"+result.getAllThrownExceptions().);
 		Set<String> corveredClses = new HashSet<String>();
 		for (String mthd : result.getTrace().getCoveredMethods()) {
 			corveredClses.add(evoMthd2cls(mthd));
@@ -66,18 +72,18 @@ public class Util {
 					}
 					java.io.PrintWriter p = new java.io.PrintWriter(new java.io.FileWriter(file, true));
 					p.println("============================");
-//					while (t != null) {
-						t.printStackTrace(p);
-//						p.println("toString:" + t.toString());
-//						p.println("message:" + t.getMessage());
-//						t = t.getCause();
-//					}
+					// while (t != null) {
+					t.printStackTrace(p);
+					// p.println("toString:" + t.toString());
+					// p.println("message:" + t.getMessage());
+					// t = t.getCause();
+					// }
 					p.close();
 				} catch (Exception e) {
 					org.evosuite.utils.LoggingUtils.getEvoLogger().error("trace error:", e);
 				}
 				org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw exception:" + t.toString());
-				org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw no this class:" + coveredCls);
+				org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw no this class:" + "|"+coveredCls+"|");
 				corveredClses.add(coveredCls);
 			}
 		}
