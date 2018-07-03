@@ -183,6 +183,8 @@ public class CoverageCriteriaAnalyzer {
     			return RuntimeVariable.Risk;
             case CLS_RISK:
             	return RuntimeVariable.CLS_RISK;
+            case MTHD_PROB_RISK:
+            	return RuntimeVariable.MTHD_PROB_RISK;
             default:
                 throw new RuntimeException("Criterion not supported: " + criterion);
 

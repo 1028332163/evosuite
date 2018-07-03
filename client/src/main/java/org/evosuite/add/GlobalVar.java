@@ -21,24 +21,73 @@ public class GlobalVar {
 		return instance;
 	}
 
-	private NodeDistance mthdDistance;
-	private NodeDistance clsDistance;
+	private NodeDistances mthdDistance;
+	private NodeDistances clsDistance;
+	private NodeProbDistance mthdProbDist;
 
-	public NodeDistance getMthdDistance() {
-		if(mthdDistance==null) {
+	public NodeDistances getMthdDistance() {
+		if (mthdDistance == null) {
 			mthdDistance = loadMthdDistance();
 		}
 		return mthdDistance;
 	}
 
-	public NodeDistance getClsDistance() {
-		if(clsDistance==null) {
+	public NodeDistances getClsDistance() {
+		if (clsDistance == null) {
 			clsDistance = loadClsDistance();
 		}
 		return clsDistance;
 	}
 
-	private NodeDistance loadMthdDistance() {
+	public NodeProbDistance getNodeProbDistance() {
+		if (mthdProbDist == null) {
+			mthdProbDist = loadMthdProbDistance();
+		}
+		return mthdProbDist;
+	}
+
+	private NodeProbDistance loadMthdProbDistance() {
+		NodeProbDistance distances = new NodeProbDistance();
+		try {
+			org.evosuite.utils.LoggingUtils.getEvoLogger()
+					.info("load method distance from: " + Properties.MTHD_PROB_DISTANCE_FILE);
+			BufferedReader reader = new BufferedReader(new FileReader(Properties.MTHD_PROB_DISTANCE_FILE));
+			String riskMthd = Util.soot2std(Properties.RISK_METHOD);
+			String line = reader.readLine();
+			while (line != null) {
+				if (!"".equals(line)) {
+					String[] mmdhp = line.split(">,");// method-method-distance-isFromHost-probability
+					String bottom = Util.soot2std(mmdhp[0] + ">");
+					if (riskMthd.equals(bottom)) {
+						String top = Util.soot2std(mmdhp[1] + ">");
+						Double distance = Double.valueOf(mmdhp[2].split(",")[0]);
+						Double prob = Double.valueOf(mmdhp[2].split(",")[2]);
+						distances.addMetric(top, distance, prob);
+//						Double distance = 
+//						Double probInverse;
+//						if (prob == 0) {
+//							probInverse = Double.MAX_VALUE;
+//						} else {
+//							probInverse = 1.0 / prob;
+//						}
+//						top2probInverse.put(top, probInverse);
+					}
+				}
+				line = reader.readLine();
+			}
+//			top2probInverse.put(riskMthd, 1.0);
+//			top2fitness.put(riskMthd, 0.0);
+			reader.close();
+		} catch (Exception e) {
+			org.evosuite.utils.LoggingUtils.getEvoLogger().error("load distance file error", e);
+		}
+
+		return distances;
+	}
+	
+	
+
+	private NodeDistances loadMthdDistance() {
 		Map<String, Map<String, Double>> distances = new HashMap<String, Map<String, Double>>();
 		try {
 			BufferedReader reader;
@@ -73,10 +122,10 @@ public class GlobalVar {
 		} catch (Exception e) {
 			org.evosuite.utils.LoggingUtils.getEvoLogger().error("load distance file error", e);
 		}
-		return new NodeDistance(distances);
+		return new NodeDistances(distances);
 	}
 
-	private NodeDistance loadClsDistance() {
+	private NodeDistances loadClsDistance() {
 		Map<String, Map<String, Double>> distances = new HashMap<String, Map<String, Double>>();
 		try {
 			BufferedReader reader;
@@ -111,6 +160,6 @@ public class GlobalVar {
 		} catch (Exception e) {
 			org.evosuite.utils.LoggingUtils.getEvoLogger().error("load distance file error", e);
 		}
-		return new NodeDistance(distances);
+		return new NodeDistances(distances);
 	}
 }

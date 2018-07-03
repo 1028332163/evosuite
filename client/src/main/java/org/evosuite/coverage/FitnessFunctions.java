@@ -23,6 +23,8 @@ import org.evosuite.Properties;
 import org.evosuite.Properties.Criterion;
 import org.evosuite.add.ClsRiskCovFactory;
 import org.evosuite.add.ClsRiskCovSuiteFitness;
+import org.evosuite.add.MthdProbCovFactory;
+import org.evosuite.add.MthdProbCovSuiteFitness;
 import org.evosuite.add.MthdRiskCovFactory;
 import org.evosuite.add.MthdRiskCovSuiteFitness;
 import org.evosuite.coverage.ambiguity.AmbiguityCoverageFactory;
@@ -135,6 +137,8 @@ public class FitnessFunctions {
 			return new MthdRiskCovSuiteFitness();
 		case CLS_RISK:
 			return new ClsRiskCovSuiteFitness();
+		case MTHD_PROB_RISK:
+			return new MthdProbCovSuiteFitness();
 		default:
 			logger.warn("No TestSuiteFitnessFunction defined for " + Properties.CRITERION
 			        + " using default one (BranchCoverageSuiteFitness)");
@@ -201,6 +205,8 @@ public class FitnessFunctions {
 			return new MthdRiskCovFactory();
 		case CLS_RISK:
 			return new ClsRiskCovFactory();
+		case MTHD_PROB_RISK:
+			return new MthdProbCovFactory();
 		default:
 			logger.warn("No TestFitnessFactory defined for " + crit
 			        + " using default one (BranchCoverageFactory)");

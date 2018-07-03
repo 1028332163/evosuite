@@ -98,6 +98,12 @@ public class Properties {
 	@Parameter(key = "mthd_distance_file", group = "Test Creation", description = "File containing methods disatnce")
 	public static String MTHD_DISTANCE_FILE = null;
 	
+	@Parameter(key = "mthd_prob_distance_file", group = "Test Creation", description = "File containing methods disatnce")
+	public static String MTHD_PROB_DISTANCE_FILE = null;
+	
+	@Parameter(key = "risk_method", group = "Test Creation", description = "class that test should coverage.")
+	public static String RISK_METHOD = null;
+	
 	@Parameter(key = "cls_distance_file", group = "Test Creation", description = "File containing methods disatnce")
 	public static String CLS_DISTANCE_FILE = null;
 	
@@ -1411,7 +1417,7 @@ public class Properties {
 		EXCEPTION, DEFUSE, ALLDEFS, BRANCH, CBRANCH, STRONGMUTATION, WEAKMUTATION,
 		MUTATION, STATEMENT, RHO, AMBIGUITY, IBRANCH, READABILITY,
         ONLYBRANCH, ONLYMUTATION, METHODTRACE, METHOD, METHODNOEXCEPTION, LINE, ONLYLINE, OUTPUT, INPUT,
-        REGRESSION,	REGRESSIONTESTS, TRYCATCH,RISK,CLS_RISK
+        REGRESSION,	REGRESSIONTESTS, TRYCATCH,RISK,CLS_RISK,MTHD_PROB_RISK
 	}
 
     @Parameter(key = "criterion", group = "Runtime", description = "Coverage criterion. Can define more than one criterion by using a ':' separated list")

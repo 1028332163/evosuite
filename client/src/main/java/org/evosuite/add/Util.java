@@ -41,7 +41,7 @@ public class Util {
 			// org.evosuite.utils.LoggingUtils.getEvoLogger()
 			// .info("lzw Throwable:" + t.getMessage() + " " + t.getClass().getName());
 			if (t instanceof NoSuchMethodError || t instanceof NoSuchMethodException) {
-				org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw NoSuchMethod:" + t.getMessage());
+				DebugUtil.limitInfo("lzw NoSuchMethod:" + t.getMessage());
 				corveredMthd.add(t.getMessage());
 			}
 		}

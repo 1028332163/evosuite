@@ -3,20 +3,13 @@ package org.evosuite.add;
 import java.util.Map;
 import java.util.Set;
 
-public class NodeDistance {
+public class NodeDistances {
 
 	private Map<String, Map<String, Double>> distances;// <bottom-method,<top-method,distance>>
 
-	public NodeDistance(Map<String, Map<String, Double>> distances) {
+	public NodeDistances(Map<String, Map<String, Double>> distances) {
 		this.distances = distances;
 	}
-
-	// public static NodeDistance i() {
-	// if (instance == null) {
-	// instance = loadDistances();
-	// }
-	// return instance;
-	// }
 
 	public Set<String> getRiskTargets() {
 		return distances.keySet();

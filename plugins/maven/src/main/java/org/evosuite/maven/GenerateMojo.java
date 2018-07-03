@@ -99,6 +99,8 @@ public class GenerateMojo extends AbstractMojo {
 	// not possible
 	@Parameter(property = "criterion", defaultValue = "LINE:BRANCH:EXCEPTION:WEAKMUTATION:OUTPUT:METHOD:METHODNOEXCEPTION:CBRANCH")
 	private String criterion;
+	
+
 
 	@Parameter(property = "spawnManagerPort", defaultValue = "")
 	private Integer spawnManagerPort;
@@ -130,9 +132,15 @@ public class GenerateMojo extends AbstractMojo {
 
 	@Parameter(property = "class")
 	private String classParam;
-
+	
+	@Parameter(property = "risk_method")
+	private String risk_method=null;
+	
 	@Parameter(property = "mthd_distance_file")
 	private String mthd_distance_file = null;
+
+	@Parameter(property = "mthd_prob_distance_file")
+	private String mthd_prob_distance_file = null;
 	
 	@Parameter(property = "cls_distance_file")
 	private String cls_distance_file = null;
@@ -272,11 +280,15 @@ public class GenerateMojo extends AbstractMojo {
 			params.add("-class");
 			params.add(classParam);
 		}
-		if (mthd_distance_file != null) {
-			params.add("-Dmthd_distance_file=" + mthd_distance_file);
+		
+		if (risk_method != null) {
+			params.add("-Drisk_method=" + risk_method);
 		}
 		if (cls_distance_file != null) {
 			params.add("-Dcls_distance_file=" + cls_distance_file);
+		}
+		if (mthd_prob_distance_file != null) {
+			params.add("-Dmthd_prob_distance_file=" + mthd_prob_distance_file);
 		}
 		if (random_seed != null) {
 			params.add("-Drandom_seed=" + random_seed);
