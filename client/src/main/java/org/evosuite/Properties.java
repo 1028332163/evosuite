@@ -950,7 +950,7 @@ public class Properties {
 	public static String LOG_TARGET = null;
 
 	@Parameter(key = "minimize", group = "Output", description = "Minimize test suite after generation")
-	public static boolean MINIMIZE = true;
+	public static boolean MINIMIZE = false;
 
 	@Parameter(key = "minimize_second_pass", group = "Output", description = "Perform a second minimization pass as the first one may retain subsumed tests")
 	public static boolean MINIMIZE_SECOND_PASS = true;

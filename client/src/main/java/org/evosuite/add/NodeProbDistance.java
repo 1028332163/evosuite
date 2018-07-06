@@ -22,7 +22,9 @@ public class NodeProbDistance {
 	public void addMetric(String top,Double distance,Double prob) {
 		top2dis.put(top, distance);
 		top2prob.put(top, prob);
+		
 		top2fitness.put(top, calFitness(distance,prob));
+//		org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw test:"+top+" "+ calFitness(distance,prob));
 	}
 	
 	private double calFitness(Double distance,Double prob) {
