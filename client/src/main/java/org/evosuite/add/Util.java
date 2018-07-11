@@ -278,7 +278,7 @@ public class Util {
 		case "void":
 			evoCls = "V";
 			break;
-		case "bollean":
+		case "boolean":
 			evoCls = "Z";
 			break;
 		case "char":
