@@ -204,10 +204,10 @@ public class MonotonicGA<T extends Chromosome> extends GeneticAlgorithm<T> {
 		currentIteration = 0;
 
 		// Set up initial population
-		generateInitialPopulation(Properties.POPULATION);
+		generateInitialPopulation(Properties.POPULATION);//long time
 		logger.debug("Calculating fitness of initial population");
-		calculateFitnessAndSortPopulation();
-
+		
+		calculateFitnessAndSortPopulation();//not long time
 		this.notifyIteration();
 	}
 

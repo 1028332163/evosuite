@@ -45,15 +45,35 @@ public class Util {
 				corveredMthd.add(t.getMessage());
 			}
 		}
+		for(String mthd:corveredMthd) {
+			org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw coveredMthd:"+mthd);
+		}
 		return corveredMthd;
 	}
 
+	public static Set<String> getExClses(ExecutionResult result) {
+		Set<String> exClses = new HashSet<String>();
+		for (Throwable t : result.getAllThrownExceptions()) {
+			// org.evosuite.utils.LoggingUtils.getEvoLogger()
+			// .info("lzw Throwable:" + t.getMessage() + " " + t.getClass().getName());
+			if (t instanceof ClassNotFoundException || t instanceof NoClassDefFoundError) {
+				String coveredCls = extraExpCls(t.getMessage());
+				org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw no class exception:" + t.toString());
+				org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw no this class:" + "|" + coveredCls + "|");
+				exClses.add(coveredCls);
+			}
+		}
+		return exClses;
+	}
+
 	public static Set<String> getCoveredCls(ExecutionResult result) {
-//		org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw expsize:" + result.getAllThrownExceptions().size());
-//		if (result.getAllThrownExceptions().size() == 1) {
-//			org.evosuite.utils.LoggingUtils.getEvoLogger()
-//					.info("lzw expsize:" + result.getAllThrownExceptions().iterator().next().getClass().getName());
-//		}
+		// org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw expsize:" +
+		// result.getAllThrownExceptions().size());
+		// if (result.getAllThrownExceptions().size() == 1) {
+		// org.evosuite.utils.LoggingUtils.getEvoLogger()
+		// .info("lzw expsize:" +
+		// result.getAllThrownExceptions().iterator().next().getClass().getName());
+		// }
 		// org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw
 		// expsize:"+result.getAllThrownExceptions().);
 		Set<String> corveredClses = new HashSet<String>();
@@ -83,7 +103,7 @@ public class Util {
 					org.evosuite.utils.LoggingUtils.getEvoLogger().error("trace error:", e);
 				}
 				org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw exception:" + t.toString());
-				org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw no this class:" + "|"+coveredCls+"|");
+				org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw no this class:" + "|" + coveredCls + "|");
 				corveredClses.add(coveredCls);
 			}
 		}
@@ -262,10 +282,16 @@ public class Util {
 				newArgs += stdCls2evo(stdCls);
 			}
 		}
-
+		// System.out.println(args_ret[1]);
+		// System.out.println( stdCls2evo(args_ret[1]));
 		return pre + "(" + newArgs + ")" + stdCls2evo(args_ret[1]);
 	}
 
+	/**
+	 * @param stdCls
+	 *            double[][][]
+	 * @return [[[D
+	 */
 	public static String stdCls2evo(String stdCls) {
 		int arrIndex = stdCls.indexOf("[]");
 		int arrDen = 0;
@@ -273,6 +299,7 @@ public class Util {
 			arrDen = (stdCls.length() - arrIndex) / 2;
 			stdCls = stdCls.substring(0, arrIndex);
 		}
+		// System.out.println(stdCls);
 		String evoCls = "";
 		switch (stdCls) {
 		case "void":
@@ -307,21 +334,11 @@ public class Util {
 	}
 
 	public static void main(String[] args) {
-		// System.out.println(Util.evo2std("neu.lab.plug.testcase.homemade.host.H1.m2()V"));
-		// System.out.println(
-		// Util.evo2std("neu.lab.plug.testcase.homemade.host.H1.<init>(Lneu/lab/plug/testcase/homemade/a/A1;)V"));
-		//
-		// System.out.println(Util.soot2std("<neu.lab.testcase.top.Top: void
-		// m2(int)>")); //
-		//
-		// System.out.println(Util.soot2std(
-		// "<neu.lab.plug.testcase.homemade.host.H1: void
-		// <init>(neu.lab.plug.testcase.homemade.a.A1)>"));
-		//
-		// System.out.println(
-		// Util.std2evo("neu.lab.plug.testcase.homemade.host.H1.<init>(neu.lab.plug.testcase.homemade.a.A1)void"));
-		//
-		// System.out.println(Util.std2evo("neu.lab.testcase.bottom.B.m2()void"));
+		// <com.fasterxml.jackson.core.JsonFactory: boolean requiresPropertyOrdering()>
+
+		// System.out.println(Util.soot2std("<com.fasterxml.jackson.core.JsonFactory:
+		// boolean requiresPropertyOrdering()>"));
+		// System.out.println(Util.std2evo("com.fasterxml.jackson.core.JsonFactory.requiresPropertyOrdering()boolean"));
 
 		System.out.println(
 				"neu.lab.testcase.middle.Mid.m2(int)void".equals(Util.evo2std("neu.lab.testcase.middle.Mid.m2(I)V")));
@@ -359,11 +376,27 @@ public class Util {
 
 	private static void testPrint(String evo, String soot) {
 		String std = Util.evo2std(evo);
-		System.out.println(std);
-		System.out.println(Util.soot2std(soot));
-		System.out.println(evo);
-		System.out.println(Util.std2evo(std));
+		System.out.println("std:" + std);
+		System.out.println("std:" + Util.soot2std(soot));
+		System.out.println("evo:" + evo);
+		System.out.println("evo:" + Util.std2evo(std));
 		System.out.println();
 	}
 
 }
+
+// System.out.println(Util.evo2std("neu.lab.plug.testcase.homemade.host.H1.m2()V"));
+// System.out.println(
+// Util.evo2std("neu.lab.plug.testcase.homemade.host.H1.<init>(Lneu/lab/plug/testcase/homemade/a/A1;)V"));
+//
+// System.out.println(Util.soot2std("<neu.lab.testcase.top.Top: void
+// m2(int)>")); //
+//
+// System.out.println(Util.soot2std(
+// "<neu.lab.plug.testcase.homemade.host.H1: void
+// <init>(neu.lab.plug.testcase.homemade.a.A1)>"));
+//
+// System.out.println(
+// Util.std2evo("neu.lab.plug.testcase.homemade.host.H1.<init>(neu.lab.plug.testcase.homemade.a.A1)void"));
+//
+// System.out.println(Util.std2evo("neu.lab.testcase.bottom.B.m2()void"));

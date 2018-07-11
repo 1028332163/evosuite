@@ -104,6 +104,8 @@ public class TestSuiteGenerator {
 		} else if (!execResult.getAllThrownExceptions().isEmpty()) {
 			// some other exception has been thrown during initialization
 			Throwable t = execResult.getAllThrownExceptions().iterator().next();
+			//CHANGE
+			writeJUnitTestSuiteForFailedInitialization();
 			throw t;
 		}
 
