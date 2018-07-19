@@ -1,0 +1,60 @@
+// class version 49.0 (49)
+// access flags 0x21
+public class neu/lab/plug/testcase/asm/App {
+
+  // compiled from: App.java
+
+  // access flags 0x1
+  public <init>()V throws java/lang/Exception 
+   L0
+    LINENUMBER 12 L0
+    ALOAD 0
+    INVOKESPECIAL java/lang/Object.<init> ()V
+   L1
+    LINENUMBER 13 L1
+    NEW java/io/BufferedReader
+    DUP
+    NEW java/io/FileReader
+    DUP
+    LDC "d:\\trace.txt"
+    INVOKESPECIAL java/io/FileReader.<init> (Ljava/lang/String;)V
+    INVOKESPECIAL java/io/BufferedReader.<init> (Ljava/io/Reader;)V
+    INVOKEVIRTUAL java/io/BufferedReader.close ()V
+   L2
+    LINENUMBER 14 L2
+    BIPUSH 7
+    ISTORE 1
+   L3
+    LINENUMBER 16 L3
+    ILOAD 1
+    BIPUSH 9
+    IF_ICMPGE L4
+   L5
+    LINENUMBER 17 L5
+    GETSTATIC java/lang/System.out : Ljava/io/PrintStream;
+    LDC "it's if"
+    INVOKEVIRTUAL java/io/PrintStream.println (Ljava/lang/String;)V
+   L6
+    LINENUMBER 18 L6
+    GOTO L7
+   L4
+    LINENUMBER 19 L4
+    GETSTATIC java/lang/System.out : Ljava/io/PrintStream;
+    LDC "it's else"
+    INVOKEVIRTUAL java/io/PrintStream.println (Ljava/lang/String;)V
+   L8
+    LINENUMBER 20 L8
+    NEW java/lang/Object
+    DUP
+    INVOKESPECIAL java/lang/Object.<init> ()V
+    INVOKEVIRTUAL java/lang/Object.toString ()Ljava/lang/String;
+    POP
+   L7
+    LINENUMBER 23 L7
+    RETURN
+   L9
+    LOCALVARIABLE this Lneu/lab/plug/testcase/asm/App; L0 L9 0
+    LOCALVARIABLE i I L3 L9 1
+    MAXSTACK = 5
+    MAXLOCALS = 2
+}

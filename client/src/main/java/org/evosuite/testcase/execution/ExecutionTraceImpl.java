@@ -196,6 +196,7 @@ public class ExecutionTraceImpl implements ExecutionTrace, Cloneable {
 	private List<BranchEval> branchesTrace = new ArrayList<BranchEval>();
 
 	// Coverage information
+	//lzw read:<className,methodName,statementLine,count>
 	public Map<String, Map<String, Map<Integer, Integer>>> coverage = Collections
 			.synchronizedMap(new HashMap<String, Map<String, Map<Integer, Integer>>>());
 

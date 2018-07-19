@@ -409,6 +409,10 @@ public class ExecutionTracer {
 	 *            a {@link java.lang.String} object.
 	 */
 	public static void passedLine(String className, String methodName, int line) {
+//		org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw trace:");
+//		for (StackTraceElement ele : Thread.currentThread().getStackTrace()) {
+//					org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw trace:" + ele);
+//				}
 		ExecutionTracer tracer = getExecutionTracer();
 		if (tracer.disabled)
 			return;

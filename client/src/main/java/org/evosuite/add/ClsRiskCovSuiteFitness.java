@@ -29,7 +29,7 @@ public class ClsRiskCovSuiteFitness extends TestSuiteFitnessFunction{
 			// mthd);
 			// reachedMethods.add(mthd);
 			// }
-			reachedClses.addAll(Util.getCoveredCls(result));
+			reachedClses.addAll(CoveredUtil.getCoveredCls(result));
 		}
 
 		for (String reachedCls : reachedClses) {

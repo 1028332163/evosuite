@@ -949,6 +949,7 @@ public class Properties {
 	@Parameter(key = "log.target", group = "Output", description = "Target logger - all logging if not set")
 	public static String LOG_TARGET = null;
 
+	//CHANGE
 	@Parameter(key = "minimize", group = "Output", description = "Minimize test suite after generation")
 	public static boolean MINIMIZE = false;
 

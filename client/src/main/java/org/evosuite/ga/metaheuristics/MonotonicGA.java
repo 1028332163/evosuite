@@ -204,7 +204,9 @@ public class MonotonicGA<T extends Chromosome> extends GeneticAlgorithm<T> {
 		currentIteration = 0;
 
 		// Set up initial population
+		org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw generateInitialPopulation:");
 		generateInitialPopulation(Properties.POPULATION);//long time
+		org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw generateInitialPopulation2:");
 		logger.debug("Calculating fitness of initial population");
 		
 		calculateFitnessAndSortPopulation();//not long time
@@ -235,8 +237,9 @@ public class MonotonicGA<T extends Chromosome> extends GeneticAlgorithm<T> {
 			bestFitness = 0.0;
 			lastBestFitness = 0.0;
 		}
-
+		org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw before envolve:");
 		while (!isFinished()) {
+//			org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw once envolve:");
 //			cnt++;
 //			org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw test:"+cnt);
 			logger.info("Population size before: " + population.size());

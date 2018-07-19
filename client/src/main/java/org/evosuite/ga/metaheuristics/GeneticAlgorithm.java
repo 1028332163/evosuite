@@ -412,17 +412,18 @@ public abstract class GeneticAlgorithm<T extends Chromosome> implements SearchAl
 	protected void generateRandomPopulation(int population_size) {
 		logger.debug("Creating random population");
 		for (int i = 0; i < population_size; i++) {
+//			LoggingUtils.getEvoLogger().info("lzw get inidvidual");
 			T individual = chromosomeFactory.getChromosome();
 //			LoggingUtils.getEvoLogger().info("lzw algorithm:"+individual.getClass().getName());
 			
-//			try {
-//				java.io.PrintWriter p = new java.io.PrintWriter(new java.io.BufferedWriter(new java.io.FileWriter("D:\\cWS\\notepad++\\testsuites.txt",true)));
-//				p.println(individual.toString());
-//				p.flush();
-//				p.close();
-//			}catch(Exception e) {
-//				e.printStackTrace();
-//			}
+			try {
+				java.io.PrintWriter p = new java.io.PrintWriter(new java.io.BufferedWriter(new java.io.FileWriter("D:\\cWS\\notepad++\\testsuites.txt",true)));
+				p.println(individual.toString());
+				p.flush();
+				p.close();
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
 			
 			for (FitnessFunction<?> fitnessFunction : this.fitnessFunctions) {
 				individual.addFitness(fitnessFunction);

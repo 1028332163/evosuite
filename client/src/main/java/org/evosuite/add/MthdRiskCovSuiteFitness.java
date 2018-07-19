@@ -28,7 +28,7 @@ public class MthdRiskCovSuiteFitness extends TestSuiteFitnessFunction {
 			// mthd);
 			// reachedMethods.add(mthd);
 			// }
-			reachedMethods.addAll(Util.getCoveredMthd(result));
+			reachedMethods.addAll(CoveredUtil.getCoveredMthd(result));
 		}
 
 		for (String reachedMthd : reachedMethods) {

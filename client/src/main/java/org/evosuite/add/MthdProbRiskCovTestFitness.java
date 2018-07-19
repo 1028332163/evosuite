@@ -28,7 +28,7 @@ public class MthdProbRiskCovTestFitness extends TestFitnessFunction {
 //		for(String mthd:Util.getCoveredMthd(result)) {
 //			org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw covered:"+mthd);
 //		}
-		if(Util.getCoveredMthd(result).contains(riskMthdSig)) {
+		if(CoveredUtil.getCoveredMthd(result).contains(riskMthdSig)) {
 			fitness = 0.0;
 		}
         updateIndividual(this, individual, fitness);

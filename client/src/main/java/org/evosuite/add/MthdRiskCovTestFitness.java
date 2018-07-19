@@ -34,7 +34,7 @@ public class MthdRiskCovTestFitness extends TestFitnessFunction {
 //				org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw target goal:"+mthd);
 //			}
 //		}
-		if(Util.getCoveredMthd(result).contains(riskMthdSig)) {
+		if(CoveredUtil.getCoveredMthd(result).contains(riskMthdSig)) {
 			fitness = 0.0;
 		}
         updateIndividual(this, individual, fitness);

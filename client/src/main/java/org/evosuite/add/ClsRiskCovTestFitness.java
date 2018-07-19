@@ -20,7 +20,7 @@ public class ClsRiskCovTestFitness extends TestFitnessFunction {
 	@Override
 	public double getFitness(TestChromosome individual, ExecutionResult result) {
 		double fitness = 1.0;
-		if (Util.getCoveredCls(result).contains(className)) {
+		if (CoveredUtil.getCoveredCls(result).contains(className)) {
 			fitness = 0.0;
 		}
 		updateIndividual(this, individual, fitness);

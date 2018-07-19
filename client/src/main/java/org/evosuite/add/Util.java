@@ -3,8 +3,6 @@ package org.evosuite.add;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.evosuite.testcase.execution.ExecutionResult;
-
 /**
  * neu.lab.plug.testcase.homemade.host.H1.<init>(Lneu/lab/plug/testcase/homemade/a/A1;)V
  * 1.V 2.<> 3.return value 4.; 5.Lneu 6.I int 7./
@@ -24,107 +22,6 @@ public class Util {
 		baseTypeChar.add("F");
 		baseTypeChar.add("J");
 		baseTypeChar.add("D");
-	}
-
-	/**
-	 * method is evosuite-pattern.
-	 * 
-	 * @param result
-	 * @return
-	 */
-	public static Set<String> getCoveredMthd(ExecutionResult result) {
-		Set<String> corveredMthd = new HashSet<String>();
-		for (String mthd : result.getTrace().getCoveredMethods()) {
-			corveredMthd.add(mthd);
-		}
-		for (Throwable t : result.getAllThrownExceptions()) {
-			// org.evosuite.utils.LoggingUtils.getEvoLogger()
-			// .info("lzw Throwable:" + t.getMessage() + " " + t.getClass().getName());
-			if (t instanceof NoSuchMethodError || t instanceof NoSuchMethodException) {
-				DebugUtil.limitInfo("lzw NoSuchMethod:" + t.getMessage());
-				corveredMthd.add(t.getMessage());
-			}
-		}
-		for(String mthd:corveredMthd) {
-			org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw coveredMthd:"+mthd);
-		}
-		return corveredMthd;
-	}
-
-	public static Set<String> getExClses(ExecutionResult result) {
-		Set<String> exClses = new HashSet<String>();
-		for (Throwable t : result.getAllThrownExceptions()) {
-			// org.evosuite.utils.LoggingUtils.getEvoLogger()
-			// .info("lzw Throwable:" + t.getMessage() + " " + t.getClass().getName());
-			if (t instanceof ClassNotFoundException || t instanceof NoClassDefFoundError) {
-				String coveredCls = extraExpCls(t.getMessage());
-				org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw no class exception:" + t.toString());
-				org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw no this class:" + "|" + coveredCls + "|");
-				exClses.add(coveredCls);
-			}
-		}
-		return exClses;
-	}
-
-	public static Set<String> getCoveredCls(ExecutionResult result) {
-		// org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw expsize:" +
-		// result.getAllThrownExceptions().size());
-		// if (result.getAllThrownExceptions().size() == 1) {
-		// org.evosuite.utils.LoggingUtils.getEvoLogger()
-		// .info("lzw expsize:" +
-		// result.getAllThrownExceptions().iterator().next().getClass().getName());
-		// }
-		// org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw
-		// expsize:"+result.getAllThrownExceptions().);
-		Set<String> corveredClses = new HashSet<String>();
-		for (String mthd : result.getTrace().getCoveredMethods()) {
-			corveredClses.add(evoMthd2cls(mthd));
-		}
-		for (Throwable t : result.getAllThrownExceptions()) {
-			// org.evosuite.utils.LoggingUtils.getEvoLogger()
-			// .info("lzw Throwable:" + t.getMessage() + " " + t.getClass().getName());
-			if (t instanceof ClassNotFoundException || t instanceof NoClassDefFoundError) {
-				String coveredCls = extraExpCls(t.getMessage());
-				try {
-					java.io.File file = new java.io.File("D:\\ws_testcase\\image\\trace.txt");
-					if (!file.getParentFile().exists()) {
-						file.getParentFile().mkdirs();
-					}
-					java.io.PrintWriter p = new java.io.PrintWriter(new java.io.FileWriter(file, true));
-					p.println("============================");
-					// while (t != null) {
-					t.printStackTrace(p);
-					// p.println("toString:" + t.toString());
-					// p.println("message:" + t.getMessage());
-					// t = t.getCause();
-					// }
-					p.close();
-				} catch (Exception e) {
-					org.evosuite.utils.LoggingUtils.getEvoLogger().error("trace error:", e);
-				}
-				org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw exception:" + t.toString());
-				org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw no this class:" + "|" + coveredCls + "|");
-				corveredClses.add(coveredCls);
-			}
-		}
-		return corveredClses;
-	}
-
-	private static String extraExpCls(String expMessage) {
-		String expCls;
-		if (expMessage.startsWith("Could not initialize class")) {
-			expCls = expMessage.substring(27);
-		} else if (expMessage.startsWith("Class ") && expMessage.endsWith(" not found")) {
-			expCls = expMessage.substring(6, expMessage.length() - 10);
-		} else if (expMessage.startsWith("Class '")
-				&& expMessage.endsWith("' should be in target project, but could not be found!")) {
-			expCls = expMessage.substring(7, expMessage.length() - 54);
-		} else {
-			expCls = expMessage;
-		}
-		expCls = expCls.replace("/", ".");
-		// System.out.println("expCls:"+expCls+"|");
-		return expCls;
 	}
 
 	public static String evoMthd2cls(String evoMthd) {
@@ -340,20 +237,25 @@ public class Util {
 		// boolean requiresPropertyOrdering()>"));
 		// System.out.println(Util.std2evo("com.fasterxml.jackson.core.JsonFactory.requiresPropertyOrdering()boolean"));
 
-		System.out.println(
-				"neu.lab.testcase.middle.Mid.m2(int)void".equals(Util.evo2std("neu.lab.testcase.middle.Mid.m2(I)V")));
-		System.out.println("neu.lab.testcase.middle.Mid.<init>(neu.lab.testcase.bottom.B)void"
-				.equals(Util.evo2std("neu.lab.testcase.middle.Mid.<init>(Lneu/lab/testcase/bottom/B;)V")));
-		System.out.println("neu.lab.testcase.top.Top.m2(java.lang.String,int)void"
-				.equals(Util.evo2std("neu.lab.testcase.top.Top.m2(Ljava/lang/String;I)V")));
-		System.out.println("neu.lab.testcase.top.Top.m(int,java.lang.String)void"
-				.equals(Util.evo2std("neu.lab.testcase.top.Top.m(ILjava/lang/String;)V")));
+//		System.out.println(
+//				"neu.lab.testcase.middle.Mid.m2(int)void".equals(Util.evo2std("neu.lab.testcase.middle.Mid.m2(I)V")));
+//		System.out.println("neu.lab.testcase.middle.Mid.<init>(neu.lab.testcase.bottom.B)void"
+//				.equals(Util.evo2std("neu.lab.testcase.middle.Mid.<init>(Lneu/lab/testcase/bottom/B;)V")));
+//		System.out.println("neu.lab.testcase.top.Top.m2(java.lang.String,int)void"
+//				.equals(Util.evo2std("neu.lab.testcase.top.Top.m2(Ljava/lang/String;I)V")));
+//		System.out.println("neu.lab.testcase.top.Top.m(int,java.lang.String)void"
+//				.equals(Util.evo2std("neu.lab.testcase.top.Top.m(ILjava/lang/String;)V")));
 		// normal
 		String evo = "math.stat.descriptive.moment.ThirdMoment.copy"
 				+ "(Lmath/stat/descriptive/moment/ThirdMoment;Lmath/stat/descriptive/moment/ThirdMoment;)V";
 		String soot = "<math.stat.descriptive.moment.ThirdMoment: void copy"
 				+ "(math.stat.descriptive.moment.ThirdMoment,math.stat.descriptive.moment.ThirdMoment)>";
 		testPrint(evo, soot);
+		
+		// has object return
+				evo = "math.stat.descriptive.moment.GeometricMean.clear()Ljava/lang/Object;";
+				soot = "<math.stat.descriptive.moment.GeometricMean: java.lang.Object clear()>";
+				testPrint(evo, soot);
 		// no arg
 		evo = "math.stat.descriptive.moment.GeometricMean.clear()V";
 		soot = "<math.stat.descriptive.moment.GeometricMean: void clear()>";
