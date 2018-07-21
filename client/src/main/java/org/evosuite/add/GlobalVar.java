@@ -9,6 +9,10 @@ import org.evosuite.Properties;
 
 public class GlobalVar {
 	private static GlobalVar instance;
+	private NodeDistances mthdDistance;
+	private NodeDistances clsDistance;
+	private NodeProbDistance mthdProbDist;
+	
 
 	private GlobalVar() {
 
@@ -21,9 +25,7 @@ public class GlobalVar {
 		return instance;
 	}
 
-	private NodeDistances mthdDistance;
-	private NodeDistances clsDistance;
-	private NodeProbDistance mthdProbDist;
+	
 
 	public NodeDistances getMthdDistance() {
 		if (mthdDistance == null) {
@@ -61,8 +63,8 @@ public class GlobalVar {
 					if (riskMthd.equals(bottom)) {
 						String top = Util.soot2std(mmdhp[1] + ">");
 						Double distance = Double.valueOf(mmdhp[2].split(",")[0]);
-						Double prob = Double.valueOf(mmdhp[2].split(",")[2]);
-						distances.addMetric(top, distance, prob);
+						Double branchNum = Double.valueOf(mmdhp[2].split(",")[2]);
+						distances.addMetric(top, distance, branchNum);
 //						Double distance = 
 //						Double probInverse;
 //						if (prob == 0) {

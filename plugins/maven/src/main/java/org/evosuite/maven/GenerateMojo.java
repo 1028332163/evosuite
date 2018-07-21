@@ -99,8 +99,6 @@ public class GenerateMojo extends AbstractMojo {
 	// not possible
 	@Parameter(property = "criterion", defaultValue = "LINE:BRANCH:EXCEPTION:WEAKMUTATION:OUTPUT:METHOD:METHODNOEXCEPTION:CBRANCH")
 	private String criterion;
-	
-
 
 	@Parameter(property = "spawnManagerPort", defaultValue = "")
 	private Integer spawnManagerPort;
@@ -127,24 +125,6 @@ public class GenerateMojo extends AbstractMojo {
 	@Parameter(defaultValue = "${repositorySystemSession}", required = true, readonly = true)
 	private RepositorySystemSession repoSession;
 
-	@Parameter(property = "target")
-	private String target;
-
-	@Parameter(property = "class")
-	private String classParam;
-	
-	@Parameter(property = "risk_method")
-	private String risk_method=null;
-	
-	@Parameter(property = "mthd_distance_file")
-	private String mthd_distance_file = null;
-
-	@Parameter(property = "mthd_prob_distance_file")
-	private String mthd_prob_distance_file = null;
-	
-	@Parameter(property = "cls_distance_file")
-	private String cls_distance_file = null;
-	
 	@Parameter(property = "random_seed")
 	private String random_seed = null;
 	/**
@@ -159,6 +139,27 @@ public class GenerateMojo extends AbstractMojo {
 	 */
 	private String[] excludes;
 
+	@Parameter(property = "target")
+	private String target;
+
+	@Parameter(property = "class")
+	private String classParam;
+
+	@Parameter(property = "risk_method")
+	private String risk_method = null;
+
+	@Parameter(property = "mthd_distance_file")
+	private String mthd_distance_file = null;
+
+	@Parameter(property = "mthd_prob_distance_file")
+	private String mthd_prob_distance_file = null;
+
+	@Parameter(property = "cls_distance_file")
+	private String cls_distance_file = null;
+	
+	@Parameter(property = "modify_cp")
+	private String modify_cp = null;
+	
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
 
@@ -212,6 +213,9 @@ public class GenerateMojo extends AbstractMojo {
 
 			// build the classpath
 			Set<String> alreadyAdded = new HashSet<>();
+			if(modify_cp!=null) {
+				cp = addPathIfExists(cp, modify_cp, alreadyAdded);
+			}
 			for (String element : project.getTestClasspathElements()) {
 				if (element.toLowerCase().contains("powermock")) {
 					// PowerMock just leads to a lot of troubles, as it includes tools.jar code
@@ -280,7 +284,7 @@ public class GenerateMojo extends AbstractMojo {
 			params.add("-class");
 			params.add(classParam);
 		}
-		
+
 		if (risk_method != null) {
 			params.add("-Drisk_method=" + risk_method);
 		}
@@ -293,7 +297,7 @@ public class GenerateMojo extends AbstractMojo {
 		if (random_seed != null) {
 			params.add("-Drandom_seed=" + random_seed);
 		}
-		
+
 		params.add("-base_dir");
 		params.add("D:\\ws_testcase\\testcase\\");
 
@@ -357,8 +361,9 @@ public class GenerateMojo extends AbstractMojo {
 
 			params.add("-Dctg_extra_args=\"" + args + "\"");
 		}
-
+		this.getLog().info("classPath:" + cp);
 		String path = writeClasspathToFile(cp);
+		this.getLog().info("path:" + cp);
 		params.add("-DCP_file_path=" + path);
 
 		// params.add("-DCP=" + cp); //this did not work properly on Windows

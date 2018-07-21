@@ -25,31 +25,31 @@ import org.objectweb.asm.util.TraceClassVisitor;
 public class AsmEn {
 
 	public static void main(String[] args) throws Exception {
-		modifyMthd();
+//		modifyMthd();
 		classTrace();
 	}
 
 	private static void modifyMthd() throws Exception {
 		ClassReader cr = new ClassReader(new FileInputStream(
-				"D:\\cWS\\eclipse1\\plug.testcase.asm\\target\\classes\\neu\\lab\\plug\\testcase\\asm\\App.class"));
+				"D:\\ws\\github_snapshot\\truth-release_0_41\\extensions\\liteproto\\target\\classes\\com\\google\\common\\truth\\extensions\\proto\\LiteProtoSubject.class"));
 
 		ClassNode cn = new ClassNode();
-		
+
 		cr.accept(cn, 0);
 		System.out.println(cn.name);
 		for (MethodNode mn : cn.methods) {
-			// get map
-			Map<LabelNode, Integer> label2num = getLabel2num(mn);
-			debug(mn);
+//			System.out.println(cn.name.replace("/", ".") + "." + mn.name + mn.desc);
+			// debug(mn);
 			System.out.println("====");
 			// all path
 			Paths paths = getAllExePath(mn);
+			Map<LabelNode, Integer> label2num = getLabel2num(mn);
 			System.out.println(paths.getPathsStr(label2num));
 			// remaining path
 			List<LabelNode> callLabels = getCallLabels(mn, "java.lang.Object.toString()Ljava/lang/String;");
 			Path remianPath = paths.getRemainPath(callLabels);
 			// filter node
-			deleteBranch(mn,remianPath);
+			deleteBranch(mn, remianPath);
 		}
 		// //
 		ClassWriter cw = new ClassWriter(0);
@@ -59,19 +59,21 @@ public class AsmEn {
 		out.write(b);
 		out.close();
 	}
-	private static void deleteBranch(MethodNode mn,Path remianPath) {
+
+	private static void deleteBranch(MethodNode mn, Path remianPath) {
 		ListIterator<AbstractInsnNode> ite = mn.instructions.iterator();
 		LabelNode currentLabel = null;
 		while (ite.hasNext()) {
 			AbstractInsnNode insNode = ite.next();
 			if (insNode instanceof LabelNode) {
-				currentLabel = (LabelNode)insNode;
-			} 
-			if(!remianPath.contains(currentLabel)||insNode instanceof JumpInsnNode) {
+				currentLabel = (LabelNode) insNode;
+			}
+			if (!remianPath.contains(currentLabel) || insNode instanceof JumpInsnNode) {
 				ite.remove();
 			}
 		}
 	}
+
 	/**
 	 * LabelNodes whose statements call evoMthd.
 	 * 
@@ -172,7 +174,7 @@ public class AsmEn {
 	}
 
 	private static void classTrace() throws Exception {
-		ClassReader cr = new ClassReader(new FileInputStream("D:\\cTestWs\\asmtest\\App.class"));
+		ClassReader cr = new ClassReader(new FileInputStream("D:\\ws\\github_snapshot\\truth-release_0_41\\extensions\\liteproto\\target\\classes\\com\\google\\common\\truth\\extensions\\proto\\LiteProtoSubject.class"));
 
 		PrintWriter p1 = new PrintWriter(new FileWriter("d:\\cWs\\notepad++\\out.txt", false));
 		cr.accept(new TraceClassVisitor(p1), 0);

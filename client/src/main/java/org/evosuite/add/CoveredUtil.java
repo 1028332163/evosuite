@@ -18,6 +18,7 @@ public class CoveredUtil {
 	 * @return
 	 */
 	public static Set<String> getCoveredMthd(ExecutionResult result) {
+
 		Set<String> corveredMthd = new HashSet<String>();
 		for (String mthd : result.getTrace().getCoveredMethods()) {
 			corveredMthd.add(mthd);

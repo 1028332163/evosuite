@@ -20,17 +20,23 @@
 package org.evosuite.ga.metaheuristics;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.evosuite.Properties;
 import org.evosuite.TimeController;
+import org.evosuite.add.CoveredUtil;
+import org.evosuite.add.DebugUtil;
 import org.evosuite.ga.Chromosome;
 import org.evosuite.ga.ChromosomeFactory;
 import org.evosuite.ga.ConstructionFailedException;
 import org.evosuite.ga.FitnessFunction;
 import org.evosuite.ga.FitnessReplacementFunction;
 import org.evosuite.ga.ReplacementFunction;
-import org.evosuite.ga.localsearch.LocalSearchBudget;
+import org.evosuite.testcase.TestCase;
+import org.evosuite.testcase.TestChromosome;
+import org.evosuite.testsuite.TestSuiteChromosome;
 import org.evosuite.utils.LoggingUtils;
 import org.evosuite.utils.Randomness;
 import org.slf4j.Logger;
@@ -322,6 +328,8 @@ public class MonotonicGA<T extends Chromosome> extends GeneticAlgorithm<T> {
 //			}
 
 		}
+		//print final result
+		DebugUtil.printFinalCover((TestSuiteChromosome)this.getBestIndividual());
 		// archive
 		TimeController.execute(this::updateBestIndividualFromArchive, "update from archive", 5_000);
 

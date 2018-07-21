@@ -1194,8 +1194,9 @@ public class Properties {
 	@DoubleValue(min = 0.0, max = 1.0)
 	public static double USAGE_RATE = 0.5;
 
+	
 	@Parameter(key = "instrumentation_skip_debug", description = "Skip debug information in bytecode instrumentation (needed for compatibility with classes transformed by Emma code instrumentation due to an ASM bug)")
-	public static boolean INSTRUMENTATION_SKIP_DEBUG = false;
+	public static boolean INSTRUMENTATION_SKIP_DEBUG = true;
 
 	@Parameter(key = "instrument_parent", description = "Also count coverage goals in superclasses")
 	public static boolean INSTRUMENT_PARENT = false;

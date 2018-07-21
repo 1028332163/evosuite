@@ -27,6 +27,16 @@ public class Util {
 	public static String evoMthd2cls(String evoMthd) {
 		return evoMthd.substring(0, evoMthd.lastIndexOf("."));
 	}
+	
+	/**
+	 * @param mthdSig
+	 *            e.g.:<org.slf4j.event.SubstituteLoggingEvent: org.slf4j.event.Level
+	 *            getLevel()>
+	 * @return e.g.:org.slf4j.event.SubstituteLoggingEvent
+	 */
+	public static String sootMthd2cls(String sootMthd) {
+		return sootMthd.substring(1, sootMthd.indexOf(":"));
+	}
 
 	/**
 	 * <neu.lab.plug.testcase.homemade.b.B1: void m2()>
@@ -228,6 +238,9 @@ public class Util {
 			break;
 		}
 		return repeatChar("[", arrDen) + evoCls;
+	}
+	public static String soot2evo(String sootMthd) {
+		return std2evo(soot2std(sootMthd));
 	}
 
 	public static void main(String[] args) {
