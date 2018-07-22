@@ -226,6 +226,7 @@ public final class ConcolicMethodAdapter extends GeneratorAdapter {
 		stack.pushStrings(className, methName, methDescription);
 		mv.visitMethodInsn(INVOKESTATIC, VM_FQ, METHOD_BEGIN, IGGG_V);
 
+		//CHANGE clinit
 		final boolean needThis = !AccessFlags.isStatic(access)
 		        && !CLINIT.equals(methName);
 		if (needThis && !INIT.equals(methName)) {

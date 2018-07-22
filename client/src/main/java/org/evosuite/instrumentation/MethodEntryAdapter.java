@@ -20,7 +20,6 @@
 package org.evosuite.instrumentation;
 
 import org.evosuite.PackageInfo;
-import org.evosuite.testcase.execution.ExecutionTrace;
 import org.evosuite.testcase.execution.ExecutionTracer;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -54,23 +53,27 @@ public class MethodEntryAdapter extends AdviceAdapter {
 	 */
 	public MethodEntryAdapter(MethodVisitor mv, int access, String className,
 	        String methodName, String desc) {
+		
 		super(Opcodes.ASM5, mv, access, methodName, desc);
 		this.className = className;
 		this.methodName = methodName;
 		this.fullMethodName = methodName + desc;
 		this.access = access;
+//		for (StackTraceElement ele : Thread.currentThread().getStackTrace()) {
+//			org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw trace:" + ele);
+//		}
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	public void onMethodEnter() {
 
-		if (methodName.equals("<clinit>"))
-			return; // FIXXME: Should we call super.onMethodEnter() here?
+//		if (methodName.equals("<clinit>"))
+//			return; // FIXXME: Should we call super.onMethodEnter() here?
 
 		mv.visitLdcInsn(className);
 		mv.visitLdcInsn(fullMethodName);
-//		org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw test:modify method "+fullMethodName);
+		org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw modify method "+fullMethodName);
 //		for (StackTraceElement ele : Thread.currentThread().getStackTrace()) {
 //			org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw trace:" + ele);
 //		}

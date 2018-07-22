@@ -99,6 +99,8 @@ public class ExecutionPathClassAdapter extends ClassVisitor {
 	@Override
 	public MethodVisitor visitMethod(int methodAccess, String name, String descriptor,
 	        String signature, String[] exceptions) {
+		
+
 		MethodVisitor mv = super.visitMethod(methodAccess, name, descriptor, signature,
 		                                     exceptions);
 
@@ -107,8 +109,9 @@ public class ExecutionPathClassAdapter extends ClassVisitor {
 		        || (methodAccess & Opcodes.ACC_BRIDGE) > 0) {
 			return mv;
 		}
-		if (name.equals("<clinit>"))
-			return mv;
+		//CHANGE
+//		if (name.equals("<clinit>"))
+//			return mv;
 
 		if (name.equals(ClassResetter.STATIC_RESET))
 			return mv;
@@ -131,6 +134,7 @@ public class ExecutionPathClassAdapter extends ClassVisitor {
 		if (isMutation()) {
 			mv = new ReturnValueAdapter(mv, className, name, descriptor);
 		}
+		
 		mv = new MethodEntryAdapter(mv, methodAccess, className, name, descriptor);
 		mv = new LineNumberMethodAdapter(mv, className, name, descriptor);
 		mv = new ArrayAllocationLimitMethodAdapter(mv, className, name, methodAccess,

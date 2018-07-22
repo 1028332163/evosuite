@@ -88,8 +88,9 @@ public class LineNumberMethodAdapter extends MethodVisitor {
 		super.visitLineNumber(line, start);
 		currentLine = line;
 
-		if (methodName.equals("<clinit>"))
-			return;
+		//CHANGE clinit
+//		if (methodName.equals("<clinit>"))
+//			return;
 
 		if (!hadInvokeSpecial) {
 			skippedLines.add(line);
@@ -105,6 +106,7 @@ public class LineNumberMethodAdapter extends MethodVisitor {
 	/** {@inheritDoc} */
 	@Override
 	public void visitMethodInsn(int opcode, String owner, String name, String desc, boolean itf) {
+//		org.evosuite.utils.LoggingUtils.getEvoLogger().info("visitMethodInsn line: "+name);
 		super.visitMethodInsn(opcode, owner, name, desc, itf);
 		if (opcode == Opcodes.INVOKESPECIAL) {
 			if (methodName.equals("<init>")) {

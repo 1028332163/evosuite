@@ -8,11 +8,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.evosuite.add.shell.ShellConfig;
+import org.evosuite.Properties;
 import org.evosuite.testcase.TestChromosome;
 import org.evosuite.testsuite.TestSuiteChromosome;
 
 public class DebugUtil {
+	private static final String reachedResult = "D:\\ws_testcase\\image\\reachedMethods.txt";
 	public static int smallCnt = 0;
 	public static int zeroCnt = 0;
 
@@ -56,7 +57,8 @@ public class DebugUtil {
 		org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw final-coverdMethod:");
 
 		try {
-			PrintWriter printer = new PrintWriter(new BufferedWriter(new FileWriter(ShellConfig.reachedResult)));
+			PrintWriter printer = new PrintWriter(
+					new BufferedWriter(new FileWriter(reachedResult)));
 			for (String reachedMethod : reachedMethods) {
 				org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw final-coverdMethod:" + reachedMethod);
 				printer.println(reachedMethod);
@@ -66,7 +68,23 @@ public class DebugUtil {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
+	}
 
+	/**
+	 * callled when target class initial error
+	 */
+	public static void printFinalCover() {
+		try {
+			PrintWriter printer = new PrintWriter(
+					new BufferedWriter(new FileWriter(reachedResult)));
+			org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw final-coverdMethod:");
+			org.evosuite.utils.LoggingUtils.getEvoLogger().info(Properties.RISK_METHOD);
+			printer.println(MthdFormatUtil.soot2evo(Properties.RISK_METHOD));
+			printer.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 	}
 }
 // org.apache.commons.jxpath.ri.model.jdom.JDOMNodePointer: int hashCode()

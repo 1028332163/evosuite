@@ -51,16 +51,18 @@ public class MethodTraceCoverageFactory extends
 
 
 	protected static boolean isUsable(Method m) {
+		//CHANGE 
 		return !m.isSynthetic() &&
 		       !m.isBridge() &&
-		       !Modifier.isNative(m.getModifiers()) &&
-		       !m.getName().contains("<clinit>");
+		       !Modifier.isNative(m.getModifiers()) ;
+//		&&!m.getName().contains("<clinit>")
 	}
 	
 	protected static boolean isUsable(Constructor<?> c) {
+		//CHANGE
 		return !c.isSynthetic() &&
-		       !Modifier.isNative(c.getModifiers()) &&
-		       !c.getName().contains("<clinit>");
+		       !Modifier.isNative(c.getModifiers()) ;
+//		       &&   !c.getName().contains("<clinit>");
 	}
 	
 	/*

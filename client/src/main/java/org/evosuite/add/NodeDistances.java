@@ -73,9 +73,9 @@ public class NodeDistances {
 
 	public static void main(String[] args) {
 		System.out.println(GlobalVar.i().getMthdDistance().toString());
-		System.out.println(Util.evo2std("neu.lab.testcase.top.ClassTop.m1(Ljava/lang/String;I)V"));
+		System.out.println(MthdFormatUtil.evo2std("neu.lab.testcase.top.ClassTop.m1(Ljava/lang/String;I)V"));
 		Double dis = GlobalVar.i().getMthdDistance()
-				.getDistance(Util.evo2std("neu.lab.testcase.top.ClassTop.m1(Ljava/lang/String;I)V"));
+				.getDistance(MthdFormatUtil.evo2std("neu.lab.testcase.top.ClassTop.m1(Ljava/lang/String;I)V"));
 		System.out.println(dis);
 	}
 

@@ -102,7 +102,7 @@ public class Properties {
 	public static String MTHD_PROB_DISTANCE_FILE = null;
 	
 	@Parameter(key = "risk_method", group = "Test Creation", description = "class that test should coverage.")
-	public static String RISK_METHOD = null;
+	public static String RISK_METHOD = null;//soot format
 	
 	@Parameter(key = "cls_distance_file", group = "Test Creation", description = "File containing methods disatnce")
 	public static String CLS_DISTANCE_FILE = null;

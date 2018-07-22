@@ -69,7 +69,9 @@ public class CFGMethodAdapter extends MethodVisitor {
 	 * signatures are not instrumented and no CFG is generated for them. Except
 	 * if some MethodInstrumentation requests it.
 	 */
-	public static final List<String> EXCLUDE = Arrays.asList("<clinit>()V",
+	//CHANGE clinit
+	//"<clinit>()V",
+	public static final List<String> EXCLUDE = Arrays.asList(
 																ClassResetter.STATIC_RESET+"()V",
 																ClassResetter.STATIC_RESET);
 	/**
@@ -160,6 +162,7 @@ public class CFGMethodAdapter extends MethodVisitor {
 	@Override
 	public void visitEnd() {
 		logger.debug("Creating CFG of "+className+"."+methodName);
+		
 		boolean isExcludedMethod = excludeMethod || EXCLUDE.contains(methodName);
 		boolean isMainMethod = plain_name.equals("main") && Modifier.isStatic(access);
 
@@ -208,7 +211,7 @@ public class CFGMethodAdapter extends MethodVisitor {
 		if (checkForMain && (!isExcludedMethod || executeOnExcluded)
 		        && (access & Opcodes.ACC_ABSTRACT) == 0
 		        && (access & Opcodes.ACC_NATIVE) == 0) {
-
+//			org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw create cfg:"+className+"."+methodName);
 			logger.info("Analyzing method " + methodName + " in class " + className);
 
 			// MethodNode mn = new CFGMethodNode((MethodNode)mv);
@@ -257,9 +260,11 @@ public class CFGMethodAdapter extends MethodVisitor {
 			}
 
 		} else {
+//			org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw not create cfg:"+className+"."+methodName);
 			logger.debug("NOT Creating CFG of "+className+"."+methodName+": "+checkForMain+", "+((!isExcludedMethod || executeOnExcluded)) +", "+((access & Opcodes.ACC_ABSTRACT) == 0)+", "+((access & Opcodes.ACC_NATIVE) == 0));
 			super.visitEnd();
 		}
+		org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw visitend on cfg:"+ className + "."+methodName+" "+next.getClass().getName());
 		mn.accept(next);
 	}
 
@@ -300,8 +305,9 @@ public class CFGMethodAdapter extends MethodVisitor {
 		if((this.access & Opcodes.ACC_NATIVE) != 0)
 			return false;
 
-		if(methodName.contains("<clinit>"))
-			return false;
+		//CHANGE clinit
+//		if(methodName.contains("<clinit>"))
+//			return false;
 
 		// If we are not using reflection, covering private constructors is difficult?
 		if(Properties.P_REFLECTION_ON_PRIVATE <= 0.0) {

@@ -22,6 +22,7 @@ package org.evosuite;
 import org.evosuite.Properties.AssertionStrategy;
 import org.evosuite.Properties.Criterion;
 import org.evosuite.Properties.TestFactory;
+import org.evosuite.add.DebugUtil;
 import org.evosuite.classpath.ClassPathHandler;
 import org.evosuite.classpath.ResourceList;
 import org.evosuite.contracts.ContractChecker;
@@ -309,6 +310,7 @@ public class TestSuiteGenerator {
 		TestSuiteChromosome suite = new TestSuiteChromosome();
 		DefaultTestCase test = buildLoadTargetClassTestCase(Properties.TARGET_CLASS);
 		suite.addTest(test);
+		DebugUtil.printFinalCover();
 		writeJUnitTestsAndCreateResult(suite);
 	}
 

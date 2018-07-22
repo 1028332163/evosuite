@@ -13,7 +13,7 @@ public class MthdRiskCovFactory extends AbstractFitnessFactory<MthdRiskCovTestFi
 //		goals.add(new RiskCoverageTestFitness("neu.lab.testcase.bottom.B","m2()V"));
 		for(String mthd:GlobalVar.i().getMthdDistance().getRiskTargets()) {
 //			org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw oriMthd:"+mthd);
-			String evoMthd = Util.std2evo(mthd);
+			String evoMthd = MthdFormatUtil.std2evo(mthd);
 
 			int index = evoMthd.lastIndexOf(".");
 			String className = evoMthd.substring(0,index);

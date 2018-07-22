@@ -3,6 +3,7 @@ package org.evosuite.add;
 import java.util.HashSet;
 import java.util.Set;
 
+
 /**
  * neu.lab.plug.testcase.homemade.host.H1.<init>(Lneu/lab/plug/testcase/homemade/a/A1;)V
  * 1.V 2.<> 3.return value 4.; 5.Lneu 6.I int 7./
@@ -10,7 +11,7 @@ import java.util.Set;
  * @author asus
  *
  */
-public class Util {
+public class MthdFormatUtil {
 	private static Set<String> baseTypeChar;
 	static {
 		baseTypeChar = new HashSet<String>();
@@ -258,6 +259,15 @@ public class Util {
 //				.equals(Util.evo2std("neu.lab.testcase.top.Top.m2(Ljava/lang/String;I)V")));
 //		System.out.println("neu.lab.testcase.top.Top.m(int,java.lang.String)void"
 //				.equals(Util.evo2std("neu.lab.testcase.top.Top.m(ILjava/lang/String;)V")));
+		
+		String evo = "neu.lab.testcase.top.ClassTop.m1(Ljava/lang/String;I)V";
+		String soot = "<neu.lab.testcase.top.ClassTop: void m1(java.lang.String,int)>";
+		System.out.println(soot2evo(soot));
+		testPrint(evo, soot);
+//		exeTest();
+	}
+	
+	private static void exeTest() {
 		// normal
 		String evo = "math.stat.descriptive.moment.ThirdMoment.copy"
 				+ "(Lmath/stat/descriptive/moment/ThirdMoment;Lmath/stat/descriptive/moment/ThirdMoment;)V";
@@ -290,11 +300,11 @@ public class Util {
 	}
 
 	private static void testPrint(String evo, String soot) {
-		String std = Util.evo2std(evo);
+		String std = MthdFormatUtil.evo2std(evo);
 		System.out.println("std:" + std);
-		System.out.println("std:" + Util.soot2std(soot));
+		System.out.println("std:" + MthdFormatUtil.soot2std(soot));
 		System.out.println("evo:" + evo);
-		System.out.println("evo:" + Util.std2evo(std));
+		System.out.println("evo:" + MthdFormatUtil.std2evo(std));
 		System.out.println();
 	}
 

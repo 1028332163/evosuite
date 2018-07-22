@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.evosuite.Properties;
 import org.evosuite.testcase.execution.ExecutionResult;
 import org.evosuite.utils.LoggingUtils;
 
@@ -31,21 +32,25 @@ public class CoveredUtil {
 				corveredMthd.add(t.getMessage());
 			}
 		}
-		for(String mthd:corveredMthd) {
-//			org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw coveredMthd:"+mthd);
+		String bottomCls = MthdFormatUtil.sootMthd2cls(Properties.RISK_METHOD);
+		if(CoveredUtil.getExClses(result).contains(bottomCls)) {
+			corveredMthd.add(MthdFormatUtil.soot2evo(Properties.RISK_METHOD));
 		}
+//		for(String mthd:corveredMthd) {
+//			org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw coveredMthd:"+mthd);
+//		}
 		return corveredMthd;
 	}
 
-	public static Set<String> getExClses(ExecutionResult result) {
+	private static Set<String> getExClses(ExecutionResult result) {
 		Set<String> exClses = new HashSet<String>();
 		for (Throwable t : result.getAllThrownExceptions()) {
 			// org.evosuite.utils.LoggingUtils.getEvoLogger()
 			// .info("lzw Throwable:" + t.getMessage() + " " + t.getClass().getName());
 			if (t instanceof ClassNotFoundException || t instanceof NoClassDefFoundError) {
 				String coveredCls = CoveredUtil.extraExpCls(t.getMessage());
-				org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw no class exception:" + t.toString());
-				org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw no this class:" + "|" + coveredCls + "|");
+//				org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw no class exception:" + t.toString());
+//				org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw no this class:" + "|" + coveredCls + "|");
 				exClses.add(coveredCls);
 			}
 		}
@@ -64,7 +69,7 @@ public class CoveredUtil {
 		// expsize:"+result.getAllThrownExceptions().);
 		Set<String> corveredClses = new HashSet<String>();
 		for (String mthd : result.getTrace().getCoveredMethods()) {
-			corveredClses.add(Util.evoMthd2cls(mthd));
+			corveredClses.add(MthdFormatUtil.evoMthd2cls(mthd));
 		}
 		for (Throwable t : result.getAllThrownExceptions()) {
 			// org.evosuite.utils.LoggingUtils.getEvoLogger()
@@ -96,7 +101,7 @@ public class CoveredUtil {
 		return corveredClses;
 	}
 
-	static String extraExpCls(String expMessage) {
+	private static String extraExpCls(String expMessage) {
 		String expCls;
 		if (expMessage.startsWith("Could not initialize class")) {
 			expCls = expMessage.substring(27);

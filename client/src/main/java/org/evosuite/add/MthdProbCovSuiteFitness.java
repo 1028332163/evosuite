@@ -19,7 +19,6 @@ public class MthdProbCovSuiteFitness extends TestSuiteFitnessFunction {
 		Double fitness = Double.MAX_VALUE;
 		List<ExecutionResult> results = runTestSuite(individual);
 		Set<String> reachedMethods = new HashSet<String>();
-		Set<String> reachedExClses = new HashSet<String>();
 
 		for (ExecutionResult result : results) {
 			// if (result.hasTimeout() || result.hasTestException()) {
@@ -31,13 +30,12 @@ public class MthdProbCovSuiteFitness extends TestSuiteFitnessFunction {
 			// reachedMethods.add(mthd);
 			// }
 			reachedMethods.addAll(CoveredUtil.getCoveredMthd(result));
-			reachedExClses.addAll(CoveredUtil.getExClses(result));
 		}
 
 		for (String reachedMthd : reachedMethods) {
 			// org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw covered method:" +
 			// reachedMthd);
-			Double dis = GlobalVar.i().getNodeProbDistance().getProbFitness(Util.evo2std(reachedMthd));
+			Double dis = GlobalVar.i().getNodeProbDistance().getProbFitness(MthdFormatUtil.evo2std(reachedMthd));
 
 			if (dis == 0) {
 				DebugUtil.infoZero("===lzw zero fitness:" + reachedMthd);
@@ -46,9 +44,7 @@ public class MthdProbCovSuiteFitness extends TestSuiteFitnessFunction {
 				fitness = dis;
 			}
 		}
-		String bottomCls = Util.evoMthd2cls(Properties.RISK_METHOD);
-		if (reachedExClses.contains(bottomCls))
-			fitness = 0.0;
+	
 		updateIndividual(this, individual, fitness);
 		// org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw fitness:" +
 		// fitness);

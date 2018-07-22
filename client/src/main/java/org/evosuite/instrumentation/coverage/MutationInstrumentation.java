@@ -125,8 +125,9 @@ public class MutationInstrumentation implements MethodInstrumentation {
 	public void analyze(ClassLoader classLoader, MethodNode mn, String className,
 	        String methodName, int access) {
 
-		if (methodName.startsWith("<clinit>"))
-			return;
+		//CHANGE
+//		if (methodName.startsWith("<clinit>"))
+//			return;
 
 		if (methodName.startsWith(ClassResetter.STATIC_RESET)) 
 			return;

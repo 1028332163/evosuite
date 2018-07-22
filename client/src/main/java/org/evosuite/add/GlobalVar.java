@@ -54,14 +54,14 @@ public class GlobalVar {
 			org.evosuite.utils.LoggingUtils.getEvoLogger()
 					.info("load method distance from: " + Properties.MTHD_PROB_DISTANCE_FILE);
 			BufferedReader reader = new BufferedReader(new FileReader(Properties.MTHD_PROB_DISTANCE_FILE));
-			String riskMthd = Util.soot2std(Properties.RISK_METHOD);
+			String riskMthd = MthdFormatUtil.soot2std(Properties.RISK_METHOD);
 			String line = reader.readLine();
 			while (line != null) {
 				if (!"".equals(line)) {
 					String[] mmdhp = line.split(">,");// method-method-distance-isFromHost-probability
-					String bottom = Util.soot2std(mmdhp[0] + ">");
+					String bottom = MthdFormatUtil.soot2std(mmdhp[0] + ">");
 					if (riskMthd.equals(bottom)) {
-						String top = Util.soot2std(mmdhp[1] + ">");
+						String top = MthdFormatUtil.soot2std(mmdhp[1] + ">");
 						Double distance = Double.valueOf(mmdhp[2].split(",")[0]);
 						Double branchNum = Double.valueOf(mmdhp[2].split(",")[2]);
 						distances.addMetric(top, distance, branchNum);
@@ -107,8 +107,8 @@ public class GlobalVar {
 				if (!"".equals(line)) {
 					// System.out.println(line);
 					String[] mmd = line.split(">,");// method-method-distance
-					String bottom = Util.soot2std(mmd[0] + ">");
-					String top = Util.soot2std(mmd[1] + ">");
+					String bottom = MthdFormatUtil.soot2std(mmd[0] + ">");
+					String top = MthdFormatUtil.soot2std(mmd[1] + ">");
 					Double distance = Double.valueOf(mmd[2].split(",")[0]);
 					Map<String, Double> m2d = distances.get(bottom);
 					if (null == m2d) {
