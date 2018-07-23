@@ -264,7 +264,7 @@ public class CFGMethodAdapter extends MethodVisitor {
 			logger.debug("NOT Creating CFG of "+className+"."+methodName+": "+checkForMain+", "+((!isExcludedMethod || executeOnExcluded)) +", "+((access & Opcodes.ACC_ABSTRACT) == 0)+", "+((access & Opcodes.ACC_NATIVE) == 0));
 			super.visitEnd();
 		}
-		org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw visitend on cfg:"+ className + "."+methodName+" "+next.getClass().getName());
+//		org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw visitend on cfg:"+ className + "."+methodName+" "+next.getClass().getName());
 		mn.accept(next);
 	}
 
