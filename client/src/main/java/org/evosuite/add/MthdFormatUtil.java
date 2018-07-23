@@ -122,6 +122,9 @@ public class MthdFormatUtil {
 		case "V":
 			stdCls = "void";
 			break;
+		case "B":
+			stdCls = "byte";
+			break;
 		case "Z":
 			stdCls = "boolean";
 			break;
@@ -218,6 +221,9 @@ public class MthdFormatUtil {
 			break;
 		case "char":
 			evoCls = "C";
+			break;
+		case "byte":
+			evoCls = "B";
 			break;
 		case "short":
 			evoCls = "S";
