@@ -35,7 +35,12 @@ public class MthdProbCovSuiteFitness extends TestSuiteFitnessFunction {
 		for (String reachedMthd : reachedMethods) {
 			// org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw covered method:" +
 			// reachedMthd);
-			Double dis = GlobalVar.i().getNodeProbDistance().getProbFitness(MthdFormatUtil.evo2std(reachedMthd));
+			Double dis = Double.MAX_VALUE;
+			try {
+				dis = GlobalVar.i().getNodeProbDistance().getProbFitness(MthdFormatUtil.evo2std(reachedMthd));
+			} catch (Exception e) {
+				DebugUtil.limitInfo("method transform error!");
+			}
 
 			if (dis == 0) {
 				DebugUtil.infoZero("===lzw zero fitness:" + reachedMthd);
@@ -44,7 +49,7 @@ public class MthdProbCovSuiteFitness extends TestSuiteFitnessFunction {
 				fitness = dis;
 			}
 		}
-	
+
 		updateIndividual(this, individual, fitness);
 		// org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw fitness:" +
 		// fitness);

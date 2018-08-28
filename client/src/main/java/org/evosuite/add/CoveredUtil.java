@@ -25,20 +25,25 @@ public class CoveredUtil {
 			corveredMthd.add(mthd);
 		}
 		for (Throwable t : result.getAllThrownExceptions()) {
-			// org.evosuite.utils.LoggingUtils.getEvoLogger()
-			// .info("lzw Throwable:" + t.getMessage() + " " + t.getClass().getName());
+			//			 org.evosuite.utils.LoggingUtils.getEvoLogger()
+			//			 .info("lzw Throwable:" + t.getMessage() + " " + t.getClass().getName());
 			if (t instanceof NoSuchMethodError || t instanceof NoSuchMethodException) {
 				DebugUtil.limitInfo("lzw NoSuchMethod:" + t.getMessage());
 				corveredMthd.add(t.getMessage());
 			}
+//			if (t instanceof java.lang.NullPointerException) {
+//				t.printStackTrace(DebugUtil.getPrinter("D:\\cWs\\notepad++\\nullpoint.txt", false));
+//				//				 org.evosuite.utils.LoggingUtils.getEvoLogger().error("nullPoint",t);
+//			}
 		}
 		String bottomCls = MthdFormatUtil.sootMthd2cls(Properties.RISK_METHOD);
-		if(CoveredUtil.getExClses(result).contains(bottomCls)) {
+		if (CoveredUtil.getExClses(result).contains(bottomCls)) {
+//			org.evosuite.utils.LoggingUtils.getEvoLogger().info("******lzw :get covered riskMethod from class.");
 			corveredMthd.add(MthdFormatUtil.soot2evo(Properties.RISK_METHOD));
 		}
-//		for(String mthd:corveredMthd) {
-//			org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw coveredMthd:"+mthd);
-//		}
+		//		for(String mthd:corveredMthd) {
+		//			org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw coveredMthd:"+mthd);
+		//		}
 		return corveredMthd;
 	}
 
@@ -49,8 +54,8 @@ public class CoveredUtil {
 			// .info("lzw Throwable:" + t.getMessage() + " " + t.getClass().getName());
 			if (t instanceof ClassNotFoundException || t instanceof NoClassDefFoundError) {
 				String coveredCls = CoveredUtil.extraExpCls(t.getMessage());
-//				org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw no class exception:" + t.toString());
-//				org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw no this class:" + "|" + coveredCls + "|");
+				//				org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw no class exception:" + t.toString());
+				//				org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw no this class:" + "|" + coveredCls + "|");
 				exClses.add(coveredCls);
 			}
 		}

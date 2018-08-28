@@ -293,16 +293,17 @@ public class Properties {
     @DoubleValue(min = 0.0, max = 1.0)
     public static double REFLECTION_START_PERCENT = 0.8;
 
+    //CHANGE
 	@Parameter(key = "p_functional_mocking", group = "Test Creation", description = "Probability [0,1] of using functional mocking (eg Mockito) when creating object instances")
 	@DoubleValue(min = 0.0, max = 1.0)
 	public static double P_FUNCTIONAL_MOCKING = 0.0; // Optimal value: 0.8
-
+   //CHANGE
 	@Parameter(key = "mock_if_no_generator", group = "Test Creation", description = "Allow mock objects if there are no generators")
-	public static boolean MOCK_IF_NO_GENERATOR = true;
-
+	public static boolean MOCK_IF_NO_GENERATOR = false;
+	
 	@Parameter(key = "functional_mocking_percent", group = "Test Creation", description = "Percentage [0,1] of search budget after which functional mocking can be activated. Mocking of missing concrete classes will be activated immediately regardless of this parameter")
 	@DoubleValue(min = 0.0, max = 1.0)
-	public static double FUNCTIONAL_MOCKING_PERCENT = 0.5;
+	public static double FUNCTIONAL_MOCKING_PERCENT = 0.0;
 
 	@Parameter(key = "functional_mocking_input_limit", group = "Test Creation", description = "When mocking a method, define max number of mocked return values for that method. Calls after the last will just re-use the last specified value")
 	@DoubleValue(min = 1)
@@ -949,9 +950,9 @@ public class Properties {
 	@Parameter(key = "log.target", group = "Output", description = "Target logger - all logging if not set")
 	public static String LOG_TARGET = null;
 
-	//CHANGE
+	//CHANGE minimize
 	@Parameter(key = "minimize", group = "Output", description = "Minimize test suite after generation")
-	public static boolean MINIMIZE = false;
+	public static boolean MINIMIZE = true;
 
 	@Parameter(key = "minimize_second_pass", group = "Output", description = "Perform a second minimization pass as the first one may retain subsumed tests")
 	public static boolean MINIMIZE_SECOND_PASS = true;
@@ -1347,11 +1348,13 @@ public class Properties {
 	@Parameter(key = "mutation_generations", group = "Test Execution", description = "Number of generations before changing the currently targeted mutants")
 	public static int MUTATION_GENERATIONS = 10;
 
+	//CHANGE
 	@Parameter(key = "replace_calls", group = "Test Execution", description = "Replace nondeterministic calls and System.exit")
-	public static boolean REPLACE_CALLS = true;
+	public static boolean REPLACE_CALLS = false;
 
+	//CHANGE
 	@Parameter(key = "replace_system_in", group = "Test Execution", description = "Replace System.in with a smart stub/mock")
-	public static boolean REPLACE_SYSTEM_IN = true;
+	public static boolean REPLACE_SYSTEM_IN = false;
 
 	@Parameter(key = "replace_gui", group = "Test Execution", description = "Replace javax.swing with a smart stub/mock")
 	public static boolean REPLACE_GUI = false;

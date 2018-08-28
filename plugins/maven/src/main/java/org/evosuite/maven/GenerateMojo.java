@@ -127,6 +127,9 @@ public class GenerateMojo extends AbstractMojo {
 
 	@Parameter(property = "random_seed")
 	private String random_seed = null;
+	
+	@Parameter(property = "base_dir")
+	private String base_dir = null;
 	/**
 	 * Defines files in the source directories to include (all .java files by
 	 * default).
@@ -251,6 +254,7 @@ public class GenerateMojo extends AbstractMojo {
 	}
 
 	private String addPathIfExists(String cp, String element, Set<String> alreadyExist) {
+//		org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw classpath:"+element);
 		File file = new File(element);
 		if (!file.exists()) {
 			/*
@@ -299,7 +303,11 @@ public class GenerateMojo extends AbstractMojo {
 		}
 
 		params.add("-base_dir");
-		params.add("D:\\ws_testcase\\testcase\\");
+		if(base_dir!=null) {
+			params.add(base_dir);
+		}else {
+			params.add("D:\\ws_testcase\\testcase\\");
+		}
 
 		params.add("-Dcriterion=" + criterion);
 		// params.add("-Dctg_schedule=" + schedule);

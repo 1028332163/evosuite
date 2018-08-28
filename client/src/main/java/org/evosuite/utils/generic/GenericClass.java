@@ -625,6 +625,7 @@ public class GenericClass implements Serializable {
 	        throws ConstructionFailedException {
 		if (typeMap.containsKey(type)) {
 			logger.debug("Type contains {}: {}", toString(), typeMap);
+			//CHANGE
 			if(typeMap.get(type) == type) {
 				// FIXXME: How does this happen?
 				throw new ConstructionFailedException("Type points to itself");

@@ -73,7 +73,7 @@ public class MethodEntryAdapter extends AdviceAdapter {
 
 		mv.visitLdcInsn(className);
 		mv.visitLdcInsn(fullMethodName);
-		org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw modify method "+fullMethodName);
+//		org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw modify method "+fullMethodName);
 //		for (StackTraceElement ele : Thread.currentThread().getStackTrace()) {
 //			org.evosuite.utils.LoggingUtils.getEvoLogger().info("lzw trace:" + ele);
 //		}
